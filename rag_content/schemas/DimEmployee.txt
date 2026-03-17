@@ -1,0 +1,123 @@
+TABLE: dbo.DimEmployee
+======================================================================
+
+DESCRIPTION:
+Employee master dimension. Contains employee profile information. Links to sales and organizational hierarchies.
+
+TYPE: Dimension Table
+
+======================================================================
+COLUMNS:
+======================================================================
+
+EmployeeKey
+  Type: int NOT NULL [PRIMARY KEY]
+
+ParentEmployeeKey
+  Type: int NULL [FK → dbo.DimEmployee.EmployeeKey]
+
+EmployeeNationalIDAlternateKey
+  Type: nvarchar(15.0) NULL
+  Sample: (numeric keys)
+
+ParentEmployeeNationalIDAlternateKey
+  Type: nvarchar(15.0) NULL
+  Sample: (numeric keys)
+
+SalesTerritoryKey
+  Type: int NULL [FK → dbo.DimSalesTerritory.SalesTerritoryKey]
+
+FirstName
+  Type: nvarchar(50.0) NOT NULL
+
+LastName
+  Type: nvarchar(50.0) NOT NULL
+
+MiddleName
+  Type: nvarchar(50.0) NULL
+
+NameStyle
+  Type: bit NOT NULL
+
+Title
+  Type: nvarchar(50.0) NULL
+
+HireDate
+  Type: date NULL
+
+BirthDate
+  Type: date NULL
+
+LoginID
+  Type: nvarchar(256.0) NULL
+  Sample: (numeric keys)
+
+EmailAddress
+  Type: nvarchar(50.0) NULL
+
+Phone
+  Type: nvarchar(25.0) NULL
+
+MaritalStatus
+  Type: nchar(1.0) NULL
+
+EmergencyContactName
+  Type: nvarchar(50.0) NULL
+
+EmergencyContactPhone
+  Type: nvarchar(25.0) NULL
+
+SalariedFlag
+  Type: bit NULL
+
+Gender
+  Type: nchar(1.0) NULL
+
+PayFrequency
+  Type: tinyint NULL
+
+BaseRate
+  Type: money NULL
+
+VacationHours
+  Type: smallint NULL
+
+SickLeaveHours
+  Type: smallint NULL
+
+CurrentFlag
+  Type: bit NOT NULL
+
+SalesPersonFlag
+  Type: bit NOT NULL
+
+DepartmentName
+  Type: nvarchar(50.0) NULL
+
+StartDate
+  Type: date NULL
+
+EndDate
+  Type: date NULL
+
+Status
+  Type: nvarchar(50.0) NULL
+
+EmployeePhoto
+  Type: varbinary NULL
+
+======================================================================
+FOREIGN KEY RELATIONSHIPS:
+======================================================================
+
+  ParentEmployeeKey → dbo.DimEmployee.EmployeeKey
+  SalesTerritoryKey → dbo.DimSalesTerritory.SalesTerritoryKey
+
+======================================================================
+USAGE NOTES:
+======================================================================
+
+
+======================================================================
+END OF dbo.DimEmployee DOCUMENTATION
+======================================================================

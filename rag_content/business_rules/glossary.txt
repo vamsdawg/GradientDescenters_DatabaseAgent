@@ -1,0 +1,264 @@
+BUSINESS GLOSSARY - ADVENTUREWORKSDW2025
+
+Quick reference for business terms and concepts in the AdventureWorksDW database.
+
+===============================================
+SALES & REVENUE TERMS
+===============================================
+
+Revenue:
+  Total SalesAmount from sales transactions. Includes product price, tax, and freight.
+
+Internet Sales:
+  Direct-to-consumer online orders stored in FactInternetSales table.
+
+Reseller Sales:
+  Business-to-business wholesale orders stored in FactResellerSales table.
+  Resellers purchase in bulk and resell to end consumers.
+
+Sales Amount:
+  Total charged to customer for an order line including tax and freight.
+
+Order:
+  A single purchase transaction identified by unique SalesOrderNumber.
+  Can contain multiple line items (products).
+
+Order Line:
+  Individual product within an order. One order can have many lines.
+
+Sales Channel:
+  Method of sale - either Internet (B2C) or Reseller (B2B).
+
+===============================================
+PRODUCT TERMS
+===============================================
+
+Product:
+  Individual item for sale (e.g., "Mountain-200 Black, 42").
+
+Product Category:
+  Top-level product grouping: Bikes, Accessories, Clothing, Components.
+
+Product Subcategory:
+  Mid-level grouping under category (e.g., "Mountain Bikes", "Helmets").
+
+Product Hierarchy:
+  Three-level structure: Category → Subcategory → Product.
+
+Finished Goods:
+  Complete, saleable products (not raw materials or components in assembly).
+  Identified by FinishedGoodsFlag = 1.
+
+List Price:
+  Manufacturer's suggested retail price (MSRP) for a product.
+
+Standard Cost:
+  Cost to manufacture or acquire the product.
+
+Unit Price:
+  Actual selling price per unit in a transaction (may differ from list price due to discounts).
+
+SKU / Product Code:
+  ProductAlternateKey - the product identifier/stock keeping unit.
+
+===============================================
+CUSTOMER TERMS
+===============================================
+
+Customer:
+  Individual who has purchased or is registered in the system.
+  Stored in DimCustomer.
+
+Active Customer:
+  Customer who has made at least one purchase (exists in FactInternetSales).
+
+Customer Segment:
+  Grouping of customers by characteristics (income, location, demographics).
+
+High-Value Customer:
+  Customer with YearlyIncome > $100,000.
+
+Geography:
+  Customer location including country, state/province, and city.
+  Stored in DimGeography dimension.
+
+Household:
+  Customer's family unit. Attributes include MaritalStatus, TotalChildren.
+
+===============================================
+TERRITORY & GEOGRAPHY
+===============================================
+
+Sales Territory:
+  Geographic region assigned to sales team. Different from customer location.
+  Stored in DimSalesTerritory.
+
+Territory Region:
+  Specific territory name (e.g., "Northwest", "Southwest", "Canada").
+
+Territory Group:
+  High-level grouping (e.g., "North America", "Europe", "Pacific").
+
+Customer Geography:
+  Where customer is physically located. May differ from their assigned sales territory.
+
+===============================================
+TIME TERMS
+===============================================
+
+Order Date:
+  Date when order was placed. Primary date for sales analysis.
+
+Ship Date:
+  Date when order was shipped/delivered.
+
+Calendar Year:
+  Standard year (January 1 - December 31).
+
+Fiscal Year:
+  Company's financial year (may differ from calendar year).
+
+Quarter:
+  Three-month period. Q1 (Jan-Mar), Q2 (Apr-Jun), Q3 (Jul-Sep), Q4 (Oct-Dec).
+
+Semester:
+  Six-month period. Semester 1 (Jan-Jun), Semester 2 (Jul-Dec).
+
+Holiday Season:
+  November-December, typically highest sales period.
+
+===============================================
+FINANCIAL & METRICS
+===============================================
+
+Profit:
+  SalesAmount minus TotalProductCost. Also called "Gross Profit".
+
+Profit Margin:
+  Profit as percentage of sales. Formula: (Profit / Sales) × 100.
+
+Average Order Value (AOV):
+  Average revenue per order. Total revenue / number of orders.
+
+Units Sold:
+  Total quantity of items sold (SUM of OrderQuantity).
+
+Order Count:
+  Number of unique orders (COUNT DISTINCT of SalesOrderNumber).
+
+Cost of Goods Sold (COGS):
+  TotalProductCost - what it costs to make/buy the products sold.
+
+Margin:
+  Same as profit margin - percentage profit on sales.
+
+===============================================
+INVENTORY TERMS
+===============================================
+
+Inventory:
+  Stock of products on hand, stored in FactProductInventory.
+
+Units Balance:
+  Current quantity of product in stock.
+
+Inventory Level:
+  Amount of stock available for sale.
+
+Movement Date:
+  Date of inventory transaction or snapshot.
+
+===============================================
+EMPLOYEE & ORGANIZATION
+===============================================
+
+Employee:
+  Person who works for Adventure Works, stored in DimEmployee.
+
+Sales Quota:
+  Target sales amount assigned to sales employees.
+  Stored in FactSalesQuota (confidential data).
+
+Department:
+  Organizational unit within company (e.g., Sales, Marketing, Production).
+
+Title:
+  Job title or role (e.g., "Sales Representative", "Manager").
+
+===============================================
+RESELLER TERMS
+===============================================
+
+Reseller:
+  Business customer who purchases wholesale and resells to consumers.
+  Stored in DimReseller.
+
+Business Type:
+  Type of reseller business (e.g., "Specialty Bike Shop", "Warehouse", "Value Added Reseller").
+
+Annual Revenue:
+  Reseller's business revenue (not purchases from Adventure Works).
+
+Number of Employees:
+  Size of reseller business.
+
+===============================================
+TECHNICAL TERMS
+===============================================
+
+Fact Table:
+  Table containing measurable transactions or events (e.g., FactInternetSales).
+  Contains foreign keys to dimensions and numeric measures.
+
+Dimension Table:
+  Table containing descriptive attributes (e.g., DimProduct, DimCustomer).
+  Provides context for facts.
+
+Primary Key:
+  Unique identifier for a record (e.g., ProductKey, CustomerKey).
+
+Foreign Key:
+  Column that references a primary key in another table.
+  Enables joins between tables.
+
+Surrogate Key:
+  Artificial key assigned by the system (e.g., ProductKey).
+  Different from natural key (ProductAlternateKey).
+
+Star Schema:
+  Database design with fact tables at center connected to dimension tables.
+  AdventureWorksDW uses star schema.
+
+===============================================
+KEY RELATIONSHIPS
+===============================================
+
+Product Hierarchy:
+  DimProductCategory ← DimProductSubcategory ← DimProduct
+
+Customer Location:
+  DimCustomer → DimGeography
+
+Sales Transactions:
+  FactInternetSales → DimProduct, DimCustomer, DimDate, DimSalesTerritory
+
+Time:
+  OrderDateKey → DimDate
+
+===============================================
+COMMON ABBREVIATIONS
+===============================================
+
+AOV - Average Order Value
+B2B - Business-to-Business (reseller sales)
+B2C - Business-to-Consumer (internet sales)
+COGS - Cost of Goods Sold
+DW - Data Warehouse
+MSRP - Manufacturer's Suggested Retail Price
+SKU - Stock Keeping Unit
+YoY - Year-over-Year
+QoQ - Quarter-over-Quarter
+
+===============================================
+END OF GLOSSARY
+===============================================

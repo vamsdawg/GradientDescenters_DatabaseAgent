@@ -1,0 +1,83 @@
+TABLE: dbo.DimDate
+======================================================================
+
+DESCRIPTION:
+Date dimension with calendar and fiscal date attributes. Essential for all time-based analysis. Pre-populated with dates.
+
+TYPE: Dimension Table
+
+======================================================================
+COLUMNS:
+======================================================================
+
+DateKey
+  Type: int NOT NULL [PRIMARY KEY]
+
+FullDateAlternateKey
+  Type: date NOT NULL
+  Sample: (numeric keys)
+
+DayNumberOfWeek
+  Type: tinyint NOT NULL
+
+EnglishDayNameOfWeek
+  Type: nvarchar(10.0) NOT NULL
+
+SpanishDayNameOfWeek
+  Type: nvarchar(10.0) NOT NULL
+
+FrenchDayNameOfWeek
+  Type: nvarchar(10.0) NOT NULL
+
+DayNumberOfMonth
+  Type: tinyint NOT NULL
+
+DayNumberOfYear
+  Type: smallint NOT NULL
+
+WeekNumberOfYear
+  Type: tinyint NOT NULL
+
+EnglishMonthName
+  Type: nvarchar(10.0) NOT NULL
+
+SpanishMonthName
+  Type: nvarchar(10.0) NOT NULL
+
+FrenchMonthName
+  Type: nvarchar(10.0) NOT NULL
+
+MonthNumberOfYear
+  Type: tinyint NOT NULL
+
+CalendarQuarter
+  Type: tinyint NOT NULL
+
+CalendarYear
+  Type: smallint NOT NULL
+
+CalendarSemester
+  Type: tinyint NOT NULL
+
+FiscalQuarter
+  Type: tinyint NOT NULL
+
+FiscalYear
+  Type: smallint NOT NULL
+
+FiscalSemester
+  Type: tinyint NOT NULL
+
+======================================================================
+USAGE NOTES:
+======================================================================
+
+- Essential for all time-based analysis
+- Contains calendar and fiscal date attributes
+- Use OrderDateKey from fact tables to join
+- CalendarYear, CalendarQuarter for grouping
+- Data range typically 2010-2014
+
+======================================================================
+END OF dbo.DimDate DOCUMENTATION
+======================================================================

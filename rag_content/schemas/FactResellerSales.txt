@@ -1,0 +1,115 @@
+TABLE: dbo.FactResellerSales
+======================================================================
+
+DESCRIPTION:
+Wholesale/reseller sales transactions (B2B). Each row represents one line item sold to business resellers who then sell to end consumers.
+
+TYPE: Fact Table
+
+======================================================================
+COLUMNS:
+======================================================================
+
+ProductKey
+  Type: int NOT NULL [FK → dbo.DimProduct.ProductKey]
+
+OrderDateKey
+  Type: int NOT NULL [FK → dbo.DimDate.DateKey]
+
+DueDateKey
+  Type: int NOT NULL [FK → dbo.DimDate.DateKey]
+
+ShipDateKey
+  Type: int NOT NULL [FK → dbo.DimDate.DateKey]
+
+ResellerKey
+  Type: int NOT NULL [FK → dbo.DimReseller.ResellerKey]
+
+EmployeeKey
+  Type: int NOT NULL [FK → dbo.DimEmployee.EmployeeKey]
+
+PromotionKey
+  Type: int NOT NULL [FK → dbo.DimPromotion.PromotionKey]
+
+CurrencyKey
+  Type: int NOT NULL [FK → dbo.DimCurrency.CurrencyKey]
+
+SalesTerritoryKey
+  Type: int NOT NULL [FK → dbo.DimSalesTerritory.SalesTerritoryKey]
+
+SalesOrderNumber
+  Type: nvarchar(20.0) NOT NULL [PRIMARY KEY]
+
+SalesOrderLineNumber
+  Type: tinyint NOT NULL [PRIMARY KEY]
+
+RevisionNumber
+  Type: tinyint NULL
+
+OrderQuantity
+  Type: smallint NULL
+
+UnitPrice
+  Type: money NULL
+
+ExtendedAmount
+  Type: money NULL
+
+UnitPriceDiscountPct
+  Type: float NULL
+
+DiscountAmount
+  Type: float NULL
+
+ProductStandardCost
+  Type: money NULL
+
+TotalProductCost
+  Type: money NULL
+
+SalesAmount
+  Type: money NULL
+
+TaxAmt
+  Type: money NULL
+
+Freight
+  Type: money NULL
+
+CarrierTrackingNumber
+  Type: nvarchar(25.0) NULL
+
+CustomerPONumber
+  Type: nvarchar(25.0) NULL
+
+OrderDate
+  Type: datetime NULL
+
+DueDate
+  Type: datetime NULL
+
+ShipDate
+  Type: datetime NULL
+
+======================================================================
+FOREIGN KEY RELATIONSHIPS:
+======================================================================
+
+  CurrencyKey → dbo.DimCurrency.CurrencyKey
+  DueDateKey → dbo.DimDate.DateKey
+  EmployeeKey → dbo.DimEmployee.EmployeeKey
+  OrderDateKey → dbo.DimDate.DateKey
+  ProductKey → dbo.DimProduct.ProductKey
+  PromotionKey → dbo.DimPromotion.PromotionKey
+  ResellerKey → dbo.DimReseller.ResellerKey
+  SalesTerritoryKey → dbo.DimSalesTerritory.SalesTerritoryKey
+  ShipDateKey → dbo.DimDate.DateKey
+
+======================================================================
+USAGE NOTES:
+======================================================================
+
+
+======================================================================
+END OF dbo.FactResellerSales DOCUMENTATION
+======================================================================

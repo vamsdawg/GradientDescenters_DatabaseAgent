@@ -1,0 +1,139 @@
+TABLE: dbo.DimProduct
+======================================================================
+
+DESCRIPTION:
+Product master dimension. Contains all product details including name, category, color, size, cost, and price information.
+
+TYPE: Dimension Table
+
+======================================================================
+COLUMNS:
+======================================================================
+
+ProductKey
+  Type: int NOT NULL [PRIMARY KEY]
+
+ProductAlternateKey
+  Type: nvarchar(25.0) NULL
+  Sample: (numeric keys)
+
+ProductSubcategoryKey
+  Type: int NULL [FK → dbo.DimProductSubcategory.ProductSubcategoryKey]
+
+WeightUnitMeasureCode
+  Type: nchar(3.0) NULL
+
+SizeUnitMeasureCode
+  Type: nchar(3.0) NULL
+
+EnglishProductName
+  Type: nvarchar(50.0) NOT NULL
+
+SpanishProductName
+  Type: nvarchar(50.0) NOT NULL
+
+FrenchProductName
+  Type: nvarchar(50.0) NOT NULL
+
+StandardCost
+  Type: money NULL
+
+FinishedGoodsFlag
+  Type: bit NOT NULL
+
+Color
+  Type: nvarchar(15.0) NOT NULL
+
+SafetyStockLevel
+  Type: smallint NULL
+
+ReorderPoint
+  Type: smallint NULL
+
+ListPrice
+  Type: money NULL
+
+Size
+  Type: nvarchar(50.0) NULL
+
+SizeRange
+  Type: nvarchar(50.0) NULL
+
+Weight
+  Type: float NULL
+
+DaysToManufacture
+  Type: int NULL
+
+ProductLine
+  Type: nchar(2.0) NULL
+
+DealerPrice
+  Type: money NULL
+
+Class
+  Type: nchar(2.0) NULL
+
+Style
+  Type: nchar(2.0) NULL
+
+ModelName
+  Type: nvarchar(50.0) NULL
+
+LargePhoto
+  Type: varbinary NULL
+
+EnglishDescription
+  Type: nvarchar(400.0) NULL
+
+FrenchDescription
+  Type: nvarchar(400.0) NULL
+
+ChineseDescription
+  Type: nvarchar(400.0) NULL
+
+ArabicDescription
+  Type: nvarchar(400.0) NULL
+
+HebrewDescription
+  Type: nvarchar(400.0) NULL
+
+ThaiDescription
+  Type: nvarchar(400.0) NULL
+
+GermanDescription
+  Type: nvarchar(400.0) NULL
+
+JapaneseDescription
+  Type: nvarchar(400.0) NULL
+
+TurkishDescription
+  Type: nvarchar(400.0) NULL
+
+StartDate
+  Type: datetime NULL
+
+EndDate
+  Type: datetime NULL
+
+Status
+  Type: nvarchar(7.0) NULL
+
+======================================================================
+FOREIGN KEY RELATIONSHIPS:
+======================================================================
+
+  ProductSubcategoryKey → dbo.DimProductSubcategory.ProductSubcategoryKey
+
+======================================================================
+USAGE NOTES:
+======================================================================
+
+- Use EnglishProductName for display purposes
+- Filter by FinishedGoodsFlag = 1 for saleable products
+- Links to subcategory/category through ProductSubcategoryKey
+- ListPrice is MSRP, StandardCost is manufacturing cost
+
+======================================================================
+END OF dbo.DimProduct DOCUMENTATION
+======================================================================

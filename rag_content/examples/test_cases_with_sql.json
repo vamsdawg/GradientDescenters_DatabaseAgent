@@ -1,0 +1,222 @@
+[
+  {
+    "id": 1,
+    "category": "Simple Select",
+    "fact_table": "DimProduct",
+    "natural_language": "Show me all products",
+    "sql": "SELECT TOP 100\n    ProductKey,\n    EnglishProductName,\n    Color,\n    ListPrice,\n    ProductLine,\n    Class\nFROM dbo.DimProduct\nWHERE FinishedGoodsFlag = 1\nORDER BY EnglishProductName",
+    "expected_tables": ["DimProduct"],
+    "difficulty": "Easy",
+    "description": "Basic SELECT with no filters, showing finished goods only"
+  },
+  {
+    "id": 2,
+    "category": "Simple Select",
+    "fact_table": "DimCustomer",
+    "natural_language": "List all customers with their names and cities",
+    "sql": "SELECT TOP 100\n    c.CustomerKey,\n    c.FirstName + ' ' + c.LastName AS CustomerName,\n    g.City,\n    g.StateProvinceName,\n    g.EnglishCountryRegionName\nFROM dbo.DimCustomer c\nINNER JOIN dbo.DimGeography g ON c.GeographyKey = g.GeographyKey\nORDER BY c.LastName, c.FirstName",
+    "expected_tables": ["DimCustomer", "DimGeography"],
+    "difficulty": "Easy",
+    "description": "Simple SELECT with join, excluding confidential email/phone"
+  },
+  {
+    "id": 3,
+    "category": "Simple Filter",
+    "fact_table": "DimProduct",
+    "natural_language": "Show me products that are red in color",
+    "sql": "SELECT\n    ProductKey,\n    EnglishProductName,\n    Color,\n    ListPrice,\n    StandardCost\nFROM dbo.DimProduct\nWHERE Color = 'Red'\n    AND FinishedGoodsFlag = 1\nORDER BY ListPrice DESC",
+    "expected_tables": ["DimProduct"],
+    "difficulty": "Easy",
+    "description": "SELECT with WHERE clause filtering by color"
+  },
+  {
+    "id": 4,
+    "category": "Aggregation",
+    "fact_table": "FactInternetSales",
+    "natural_language": "What is the total sales amount?",
+    "sql": "SELECT\n    SUM(SalesAmount) AS TotalRevenue,\n    SUM(OrderQuantity) AS TotalUnitsSold,\n    COUNT(DISTINCT SalesOrderNumber) AS TotalOrders\nFROM dbo.FactInternetSales",
+    "expected_tables": ["FactInternetSales"],
+    "difficulty": "Medium",
+    "description": "Simple SUM aggregation with multiple metrics"
+  },
+  {
+    "id": 5,
+    "category": "Aggregation",
+    "fact_table": "DimCustomer",
+    "natural_language": "How many customers do we have?",
+    "sql": "SELECT\n    COUNT(*) AS TotalCustomers,\n    COUNT(DISTINCT GeographyKey) AS UniqueLocations\nFROM dbo.DimCustomer",
+    "expected_tables": ["DimCustomer"],
+    "difficulty": "Easy",
+    "description": "COUNT aggregation"
+  },
+  {
+    "id": 6,
+    "category": "Aggregation",
+    "fact_table": "FactInternetSales",
+    "natural_language": "What is the average order quantity for internet sales?",
+    "sql": "SELECT\n    AVG(OrderQuantity) AS AvgOrderQuantity,\n    AVG(SalesAmount) AS AvgOrderValue,\n    AVG(SalesAmount / NULLIF(OrderQuantity, 0)) AS AvgPricePerUnit\nFROM dbo.FactInternetSales",
+    "expected_tables": ["FactInternetSales"],
+    "difficulty": "Medium",
+    "description": "AVG aggregation with calculated fields"
+  },
+  {
+    "id": 7,
+    "category": "Join",
+    "fact_table": "FactInternetSales",
+    "natural_language": "Show me all sales with product names",
+    "sql": "SELECT TOP 100\n    fis.SalesOrderNumber,\n    fis.SalesOrderLineNumber,\n    p.EnglishProductName,\n    fis.OrderQuantity,\n    fis.UnitPrice,\n    fis.SalesAmount\nFROM dbo.FactInternetSales fis\nINNER JOIN dbo.DimProduct p ON fis.ProductKey = p.ProductKey\nORDER BY fis.SalesOrderNumber, fis.SalesOrderLineNumber",
+    "expected_tables": ["FactInternetSales", "DimProduct"],
+    "difficulty": "Medium",
+    "description": "Simple JOIN between fact and dimension"
+  },
+  {
+    "id": 8,
+    "category": "Join",
+    "fact_table": "FactInternetSales",
+    "natural_language": "List all orders with customer names and product names",
+    "sql": "SELECT TOP 100\n    fis.SalesOrderNumber,\n    c.FirstName + ' ' + c.LastName AS CustomerName,\n    p.EnglishProductName,\n    fis.OrderQuantity,\n    fis.SalesAmount\nFROM dbo.FactInternetSales fis\nINNER JOIN dbo.DimCustomer c ON fis.CustomerKey = c.CustomerKey\nINNER JOIN dbo.DimProduct p ON fis.ProductKey = p.ProductKey\nORDER BY fis.SalesOrderNumber",
+    "expected_tables": ["FactInternetSales", "DimCustomer", "DimProduct"],
+    "difficulty": "Medium",
+    "description": "Multiple JOINs across fact and dimensions"
+  },
+  {
+    "id": 9,
+    "category": "Join",
+    "fact_table": "FactInternetSales",
+    "natural_language": "Show me sales by product category",
+    "sql": "SELECT\n    pc.EnglishProductCategoryName AS Category,\n    SUM(fis.SalesAmount) AS TotalRevenue,\n    SUM(fis.OrderQuantity) AS TotalUnitsSold,\n    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount\nFROM dbo.FactInternetSales fis\nINNER JOIN dbo.DimProduct p ON fis.ProductKey = p.ProductKey\nINNER JOIN dbo.DimProductSubcategory ps ON p.ProductSubcategoryKey = ps.ProductSubcategoryKey\nINNER JOIN dbo.DimProductCategory pc ON ps.ProductCategoryKey = pc.ProductCategoryKey\nGROUP BY pc.EnglishProductCategoryName\nORDER BY TotalRevenue DESC",
+    "expected_tables": ["FactInternetSales", "DimProduct", "DimProductSubcategory", "DimProductCategory"],
+    "difficulty": "Hard",
+    "description": "Multiple JOINs through product hierarchy with aggregation"
+  },
+  {
+    "id": 10,
+    "category": "Date Filter",
+    "fact_table": "FactInternetSales",
+    "natural_language": "Show me sales from the year 2023",
+    "sql": "SELECT\n    d.CalendarYear,\n    d.MonthNumberOfYear,\n    d.EnglishMonthName,\n    SUM(fis.SalesAmount) AS MonthlyRevenue,\n    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount\nFROM dbo.FactInternetSales fis\nINNER JOIN dbo.DimDate d ON fis.OrderDateKey = d.DateKey\nWHERE d.CalendarYear = 2013\nGROUP BY d.CalendarYear, d.MonthNumberOfYear, d.EnglishMonthName\nORDER BY d.MonthNumberOfYear",
+    "expected_tables": ["FactInternetSales", "DimDate"],
+    "difficulty": "Medium",
+    "description": "Date filtering with dimension table (using 2013 as AdventureWorks has older data)"
+  },
+  {
+    "id": 11,
+    "category": "Date Filter",
+    "fact_table": "FactInternetSales",
+    "natural_language": "What were the total sales in December 2013?",
+    "sql": "SELECT\n    d.CalendarYear,\n    d.EnglishMonthName,\n    SUM(fis.SalesAmount) AS TotalRevenue,\n    SUM(fis.OrderQuantity) AS TotalUnits,\n    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount,\n    AVG(fis.SalesAmount) AS AvgOrderValue\nFROM dbo.FactInternetSales fis\nINNER JOIN dbo.DimDate d ON fis.OrderDateKey = d.DateKey\nWHERE d.CalendarYear = 2013\n    AND d.MonthNumberOfYear = 12\nGROUP BY d.CalendarYear, d.EnglishMonthName",
+    "expected_tables": ["FactInternetSales", "DimDate"],
+    "difficulty": "Medium",
+    "description": "Date filtering with month and year, plus aggregation"
+  },
+  {
+    "id": 12,
+    "category": "Group By",
+    "fact_table": "FactInternetSales",
+    "natural_language": "Show me total sales by country",
+    "sql": "SELECT\n    g.EnglishCountryRegionName AS Country,\n    SUM(fis.SalesAmount) AS TotalRevenue,\n    COUNT(DISTINCT fis.CustomerKey) AS UniqueCustomers,\n    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount,\n    AVG(fis.SalesAmount) AS AvgOrderValue\nFROM dbo.FactInternetSales fis\nINNER JOIN dbo.DimCustomer c ON fis.CustomerKey = c.CustomerKey\nINNER JOIN dbo.DimGeography g ON c.GeographyKey = g.GeographyKey\nGROUP BY g.EnglishCountryRegionName\nORDER BY TotalRevenue DESC",
+    "expected_tables": ["FactInternetSales", "DimCustomer", "DimGeography"],
+    "difficulty": "Hard",
+    "description": "GROUP BY with multiple joins through customer geography"
+  },
+  {
+    "id": 13,
+    "category": "Group By",
+    "fact_table": "DimProduct",
+    "natural_language": "What is the average unit price by product category?",
+    "sql": "SELECT\n    pc.EnglishProductCategoryName AS Category,\n    AVG(p.ListPrice) AS AvgListPrice,\n    AVG(p.StandardCost) AS AvgCost,\n    AVG(p.ListPrice - p.StandardCost) AS AvgMargin,\n    COUNT(*) AS ProductCount\nFROM dbo.DimProduct p\nINNER JOIN dbo.DimProductSubcategory ps ON p.ProductSubcategoryKey = ps.ProductSubcategoryKey\nINNER JOIN dbo.DimProductCategory pc ON ps.ProductCategoryKey = pc.ProductCategoryKey\nWHERE p.FinishedGoodsFlag = 1\nGROUP BY pc.EnglishProductCategoryName\nORDER BY AvgListPrice DESC",
+    "expected_tables": ["DimProduct", "DimProductSubcategory", "DimProductCategory"],
+    "difficulty": "Medium",
+    "description": "GROUP BY with aggregation and join through product hierarchy"
+  },
+  {
+    "id": 14,
+    "category": "Top N",
+    "fact_table": "FactInternetSales",
+    "natural_language": "Show me the top 10 products by sales amount",
+    "sql": "SELECT TOP 10\n    p.EnglishProductName,\n    SUM(fis.SalesAmount) AS TotalRevenue,\n    SUM(fis.OrderQuantity) AS TotalUnitsSold,\n    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount,\n    AVG(fis.UnitPrice) AS AvgSellingPrice\nFROM dbo.FactInternetSales fis\nINNER JOIN dbo.DimProduct p ON fis.ProductKey = p.ProductKey\nGROUP BY p.EnglishProductName, p.ProductKey\nORDER BY TotalRevenue DESC",
+    "expected_tables": ["FactInternetSales", "DimProduct"],
+    "difficulty": "Hard",
+    "description": "TOP N with aggregation and sorting"
+  },
+  {
+    "id": 15,
+    "category": "Top N",
+    "fact_table": "FactInternetSales",
+    "natural_language": "Who are the top 5 customers by total purchase amount?",
+    "sql": "SELECT TOP 5\n    c.CustomerKey,\n    c.FirstName + ' ' + c.LastName AS CustomerName,\n    g.City,\n    g.EnglishCountryRegionName AS Country,\n    SUM(fis.SalesAmount) AS TotalPurchases,\n    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount,\n    AVG(fis.SalesAmount) AS AvgOrderValue\nFROM dbo.FactInternetSales fis\nINNER JOIN dbo.DimCustomer c ON fis.CustomerKey = c.CustomerKey\nINNER JOIN dbo.DimGeography g ON c.GeographyKey = g.GeographyKey\nGROUP BY c.CustomerKey, c.FirstName, c.LastName, g.City, g.EnglishCountryRegionName\nORDER BY TotalPurchases DESC",
+    "expected_tables": ["FactInternetSales", "DimCustomer", "DimGeography"],
+    "difficulty": "Hard",
+    "description": "TOP N customers with customer dimension and geography"
+  },
+  {
+    "id": 16,
+    "category": "Complex",
+    "fact_table": "FactInternetSales",
+    "natural_language": "Compare sales between 2012 and 2013 by quarter",
+    "sql": "SELECT\n    d.CalendarYear,\n    d.CalendarQuarter,\n    SUM(fis.SalesAmount) AS QuarterlyRevenue,\n    SUM(fis.OrderQuantity) AS TotalUnits,\n    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount\nFROM dbo.FactInternetSales fis\nINNER JOIN dbo.DimDate d ON fis.OrderDateKey = d.DateKey\nWHERE d.CalendarYear IN (2012, 2013)\nGROUP BY d.CalendarYear, d.CalendarQuarter\nORDER BY d.CalendarYear, d.CalendarQuarter",
+    "expected_tables": ["FactInternetSales", "DimDate"],
+    "difficulty": "Very Hard",
+    "description": "Year-over-year comparison with time grouping"
+  },
+  {
+    "id": 17,
+    "category": "Complex",
+    "fact_table": "FactInternetSales",
+    "natural_language": "Show me the profit margin by product subcategory",
+    "sql": "SELECT\n    ps.EnglishProductSubcategoryName AS Subcategory,\n    SUM(fis.SalesAmount) AS TotalRevenue,\n    SUM(fis.TotalProductCost) AS TotalCost,\n    SUM(fis.SalesAmount - fis.TotalProductCost) AS TotalProfit,\n    CAST(SUM(fis.SalesAmount - fis.TotalProductCost) / NULLIF(SUM(fis.SalesAmount), 0) * 100 AS DECIMAL(10,2)) AS ProfitMarginPct\nFROM dbo.FactInternetSales fis\nINNER JOIN dbo.DimProduct p ON fis.ProductKey = p.ProductKey\nINNER JOIN dbo.DimProductSubcategory ps ON p.ProductSubcategoryKey = ps.ProductSubcategoryKey\nGROUP BY ps.EnglishProductSubcategoryName\nHAVING SUM(fis.SalesAmount) > 0\nORDER BY ProfitMarginPct DESC",
+    "expected_tables": ["FactInternetSales", "DimProduct", "DimProductSubcategory"],
+    "difficulty": "Very Hard",
+    "description": "Calculated profit margin with multiple joins and HAVING clause"
+  },
+  {
+    "id": 18,
+    "category": "Complex",
+    "fact_table": "FactInternetSales",
+    "natural_language": "Which sales territory has the highest average order value?",
+    "sql": "SELECT\n    st.SalesTerritoryRegion,\n    st.SalesTerritoryCountry,\n    SUM(fis.SalesAmount) AS TotalRevenue,\n    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount,\n    CAST(SUM(fis.SalesAmount) / NULLIF(COUNT(DISTINCT fis.SalesOrderNumber), 0) AS DECIMAL(10,2)) AS AvgOrderValue\nFROM dbo.FactInternetSales fis\nINNER JOIN dbo.DimSalesTerritory st ON fis.SalesTerritoryKey = st.SalesTerritoryKey\nGROUP BY st.SalesTerritoryRegion, st.SalesTerritoryCountry\nORDER BY AvgOrderValue DESC",
+    "expected_tables": ["FactInternetSales", "DimSalesTerritory"],
+    "difficulty": "Hard",
+    "description": "Aggregation with calculated average order value by territory"
+  },
+  {
+    "id": 19,
+    "category": "Reseller Sales",
+    "fact_table": "FactResellerSales",
+    "natural_language": "Show me total reseller sales by product category",
+    "sql": "SELECT\n    pc.EnglishProductCategoryName AS Category,\n    SUM(frs.SalesAmount) AS TotalRevenue,\n    SUM(frs.OrderQuantity) AS TotalUnitsSold,\n    COUNT(DISTINCT frs.SalesOrderNumber) AS OrderCount\nFROM dbo.FactResellerSales frs\nINNER JOIN dbo.DimProduct p ON frs.ProductKey = p.ProductKey\nINNER JOIN dbo.DimProductSubcategory ps ON p.ProductSubcategoryKey = ps.ProductSubcategoryKey\nINNER JOIN dbo.DimProductCategory pc ON ps.ProductCategoryKey = pc.ProductCategoryKey\nGROUP BY pc.EnglishProductCategoryName\nORDER BY TotalRevenue DESC",
+    "expected_tables": ["FactResellerSales", "DimProduct", "DimProductSubcategory", "DimProductCategory"],
+    "difficulty": "Hard",
+    "description": "Reseller sales aggregated by product category"
+  },
+  {
+    "id": 20,
+    "category": "Reseller Sales",
+    "fact_table": "FactResellerSales",
+    "natural_language": "Compare reseller vs internet sales totals",
+    "sql": "SELECT\n    'Reseller' AS SalesChannel,\n    SUM(SalesAmount) AS TotalRevenue,\n    COUNT(DISTINCT SalesOrderNumber) AS OrderCount\nFROM dbo.FactResellerSales\nUNION ALL\nSELECT\n    'Internet' AS SalesChannel,\n    SUM(SalesAmount) AS TotalRevenue,\n    COUNT(DISTINCT SalesOrderNumber) AS OrderCount\nFROM dbo.FactInternetSales\nORDER BY TotalRevenue DESC",
+    "expected_tables": ["FactResellerSales", "FactInternetSales"],
+    "difficulty": "Medium",
+    "description": "UNION query comparing two fact tables"
+  },
+  {
+    "id": 21,
+    "category": "Inventory",
+    "fact_table": "FactProductInventory",
+    "natural_language": "What is the current inventory level by product?",
+    "sql": "SELECT\n    p.EnglishProductName,\n    p.ProductLine,\n    SUM(fpi.UnitsBalance) AS CurrentInventory,\n    AVG(fpi.UnitsBalance) AS AvgInventoryLevel\nFROM dbo.FactProductInventory fpi\nINNER JOIN dbo.DimProduct p ON fpi.ProductKey = p.ProductKey\nWHERE fpi.MovementDate = (SELECT MAX(MovementDate) FROM dbo.FactProductInventory)\nGROUP BY p.EnglishProductName, p.ProductLine, p.ProductKey\nORDER BY CurrentInventory DESC",
+    "expected_tables": ["FactProductInventory", "DimProduct"],
+    "difficulty": "Hard",
+    "description": "Inventory snapshot query with subquery for latest date"
+  },
+  {
+    "id": 22,
+    "category": "Sales Targets",
+    "fact_table": "FactSalesQuota",
+    "natural_language": "Show me sales quotas by employee and year",
+    "sql": "SELECT\n    e.FirstName + ' ' + e.LastName AS EmployeeName,\n    e.Title,\n    d.CalendarYear,\n    d.CalendarQuarter,\n    SUM(fsq.SalesAmountQuota) AS QuarterlyQuota\nFROM dbo.FactSalesQuota fsq\nINNER JOIN dbo.DimEmployee e ON fsq.EmployeeKey = e.EmployeeKey\nINNER JOIN dbo.DimDate d ON fsq.DateKey = d.DateKey\nGROUP BY e.FirstName, e.LastName, e.Title, d.CalendarYear, d.CalendarQuarter\nORDER BY d.CalendarYear, d.CalendarQuarter, QuarterlyQuota DESC",
+    "expected_tables": ["FactSalesQuota", "DimEmployee", "DimDate"],
+    "difficulty": "Medium",
+    "description": "Sales quota analysis by employee (note: treats quota data as non-sensitive for learning)"
+  }
+]

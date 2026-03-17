@@ -1,0 +1,84 @@
+PATTERN: Time-Based Sales Analysis
+
+WHEN TO USE:
+- Questions with dates, years, quarters, months
+- Year-over-year comparisons
+- Trend analysis, seasonality
+- "In 2013", "last quarter", "monthly sales", etc.
+
+TABLES INVOLVED:
+- FactInternetSales (fact table - sales transactions)
+- DimDate (dimension - date attributes)
+
+JOIN PATH:
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimDate d ON fis.OrderDateKey = d.DateKey
+
+CRITICAL: Use OrderDateKey (NOT ShipDateKey or DueDateKey) for sales analysis
+
+KEY DATE COLUMNS:
+- FullDateAlternateKey (actual date)
+- CalendarYear (year: 2011, 2012, 2013, 2014)
+- CalendarQuarter (quarter: 1, 2, 3, 4)
+- MonthNumberOfYear (month: 1-12)
+- EnglishMonthName (month name: "January", "February", etc.)
+- CalendarSemester (half year: 1 or 2)
+- FiscalYear, FiscalQuarter (fiscal calendar if different from calendar)
+- DayNumberOfWeek (day of week: 1-7)
+- EnglishDayNameOfWeek (day name: "Monday", etc.)
+
+DATA RANGE:
+AdventureWorksDW contains data primarily from 2010-2014
+Use years 2011-2013 for queries as they have most complete data
+
+EXAMPLE QUERY - Monthly Sales by Year:
+SELECT
+    d.CalendarYear,
+    d.MonthNumberOfYear,
+    d.EnglishMonthName,
+    SUM(fis.SalesAmount) AS MonthlyRevenue,
+    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimDate d ON fis.OrderDateKey = d.DateKey
+WHERE d.CalendarYear = 2013
+GROUP BY d.CalendarYear, d.MonthNumberOfYear, d.EnglishMonthName
+ORDER BY d.MonthNumberOfYear
+
+EXAMPLE QUERY - Quarterly Comparison:
+SELECT
+    d.CalendarYear,
+    d.CalendarQuarter,
+    SUM(fis.SalesAmount) AS QuarterlyRevenue,
+    SUM(fis.OrderQuantity) AS TotalUnits
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimDate d ON fis.OrderDateKey = d.DateKey
+WHERE d.CalendarYear IN (2012, 2013)
+GROUP BY d.CalendarYear, d.CalendarQuarter
+ORDER BY d.CalendarYear, d.CalendarQuarter
+
+EXAMPLE QUERY - Year-over-Year Growth:
+WITH YearlySales AS (
+    SELECT
+        d.CalendarYear,
+        SUM(fis.SalesAmount) AS AnnualRevenue
+    FROM dbo.FactInternetSales fis
+    INNER JOIN dbo.DimDate d ON fis.OrderDateKey = d.DateKey
+    GROUP BY d.CalendarYear
+)
+SELECT
+    current.CalendarYear,
+    current.AnnualRevenue AS CurrentYearRevenue,
+    prior.AnnualRevenue AS PriorYearRevenue,
+    current.AnnualRevenue - prior.AnnualRevenue AS GrowthAmount,
+    CAST((current.AnnualRevenue - prior.AnnualRevenue) / NULLIF(prior.AnnualRevenue, 0) * 100 AS DECIMAL(10,2)) AS GrowthPct
+FROM YearlySales current
+LEFT JOIN YearlySales prior ON current.CalendarYear = prior.CalendarYear + 1
+ORDER BY current.CalendarYear
+
+NOTES:
+- ALWAYS use OrderDateKey for sales analysis
+- ShipDateKey is for delivery analysis
+- DueDateKey is for fulfillment analysis
+- Include both numeric (MonthNumberOfYear) and text (EnglishMonthName) for clarity
+- Use IN clause for multi-year comparisons
+- Sort by numeric date fields, not text names

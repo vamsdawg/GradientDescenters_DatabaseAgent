@@ -1,0 +1,77 @@
+PATTERN: Reseller Sales Analysis
+
+WHEN TO USE:
+- Questions about wholesale, reseller, or B2B sales
+- "Reseller sales", "wholesale", "business customers"
+- Comparing internet vs reseller channels
+- Any mention of FactResellerSales
+
+TABLES INVOLVED:
+- FactResellerSales (fact table - reseller/wholesale transactions)
+- DimReseller (dimension - reseller/business customer information)
+- DimProduct, DimDate, DimSalesTerritory (same as internet sales)
+
+KEY DIFFERENCE FROM INTERNET SALES:
+- FactInternetSales: Direct-to-consumer (B2C) online sales
+- FactResellerSales: Business-to-business (B2B) wholesale sales
+- Resellers purchase in bulk and resell to end consumers
+
+JOIN PATH - Basic Reseller Sales:
+FROM dbo.FactResellerSales frs
+INNER JOIN dbo.DimProduct p ON frs.ProductKey = p.ProductKey
+INNER JOIN dbo.DimReseller r ON frs.ResellerKey = r.ResellerKey
+
+KEY RESELLER COLUMNS:
+- ResellerName (business name)
+- BusinessType (e.g., "Warehouse", "Specialty Bike Shop", "Value Added Reseller")
+- NumberEmployees (reseller size)
+- AnnualRevenue (reseller revenue)
+- ProductLine (products they focus on)
+
+COMPARISON QUERY - Internet vs Reseller:
+SELECT
+    'Internet' AS SalesChannel,
+    SUM(SalesAmount) AS TotalRevenue,
+    COUNT(DISTINCT SalesOrderNumber) AS OrderCount,
+    AVG(SalesAmount) AS AvgOrderValue
+FROM dbo.FactInternetSales
+UNION ALL
+SELECT
+    'Reseller' AS SalesChannel,
+    SUM(SalesAmount) AS TotalRevenue,
+    COUNT(DISTINCT SalesOrderNumber) AS OrderCount,
+    AVG(SalesAmount) AS AvgOrderValue
+FROM dbo.FactResellerSales
+ORDER BY TotalRevenue DESC
+
+EXAMPLE - Reseller Performance by Business Type:
+SELECT
+    r.BusinessType,
+    COUNT(DISTINCT r.ResellerKey) AS ResellerCount,
+    SUM(frs.SalesAmount) AS TotalRevenue,
+    SUM(frs.OrderQuantity) AS TotalUnits,
+    AVG(frs.SalesAmount) AS AvgOrderValue
+FROM dbo.FactResellerSales frs
+INNER JOIN dbo.DimReseller r ON frs.ResellerKey = r.ResellerKey
+GROUP BY r.BusinessType
+ORDER BY TotalRevenue DESC
+
+EXAMPLE - Top Resellers:
+SELECT TOP 10
+    r.ResellerName,
+    r.BusinessType,
+    g.EnglishCountryRegionName AS Country,
+    SUM(frs.SalesAmount) AS TotalPurchases,
+    COUNT(DISTINCT frs.SalesOrderNumber) AS OrderCount
+FROM dbo.FactResellerSales frs
+INNER JOIN dbo.DimReseller r ON frs.ResellerKey = r.ResellerKey
+INNER JOIN dbo.DimGeography g ON r.GeographyKey = g.GeographyKey
+GROUP BY r.ResellerName, r.BusinessType, g.EnglishCountryRegionName
+ORDER BY TotalPurchases DESC
+
+NOTES:
+- Reseller orders are typically larger (bulk orders)
+- Use FactResellerSales for B2B, FactInternetSales for B2C
+- DimReseller connects to DimGeography (reseller location)
+- Can analyze both channels together using UNION ALL
+- Order values in FactResellerSales are generally higher than FactInternetSales

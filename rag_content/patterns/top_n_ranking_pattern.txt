@@ -1,0 +1,85 @@
+PATTERN: Top N Ranking Queries
+
+WHEN TO USE:
+- "Top 10", "Top 5", "Best", "Highest", "Most", "Leading"
+- "Bottom", "Worst", "Lowest", "Least" (use ASC instead of DESC)
+- Ranking or leaderboard queries
+
+SYNTAX:
+SELECT TOP n
+    [columns]
+FROM [tables]
+[WHERE conditions]
+GROUP BY [grouping columns]
+ORDER BY [ranking metric] DESC
+
+CRITICAL RULES:
+1. TOP must come immediately after SELECT
+2. ORDER BY is REQUIRED with TOP
+3. For aggregations, include key in GROUP BY even if not in SELECT
+4. Use DESC for "top/best/highest", ASC for "bottom/worst/lowest"
+
+EXAMPLE - Top 10 Products by Revenue:
+SELECT TOP 10
+    p.EnglishProductName,
+    SUM(fis.SalesAmount) AS TotalRevenue,
+    SUM(fis.OrderQuantity) AS TotalUnitsSold,
+    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimProduct p ON fis.ProductKey = p.ProductKey
+GROUP BY p.EnglishProductName, p.ProductKey
+ORDER BY TotalRevenue DESC
+
+EXAMPLE - Top 5 Customers by Purchase Amount:
+SELECT TOP 5
+    c.CustomerKey,
+    c.FirstName + ' ' + c.LastName AS CustomerName,
+    g.City,
+    g.EnglishCountryRegionName AS Country,
+    SUM(fis.SalesAmount) AS TotalPurchases,
+    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimCustomer c ON fis.CustomerKey = c.CustomerKey
+INNER JOIN dbo.DimGeography g ON c.GeographyKey = g.GeographyKey
+GROUP BY c.CustomerKey, c.FirstName, c.LastName, g.City, g.EnglishCountryRegionName
+ORDER BY TotalPurchases DESC
+
+EXAMPLE - Bottom 5 Performing Categories:
+SELECT TOP 5
+    pc.EnglishProductCategoryName AS Category,
+    SUM(fis.SalesAmount) AS TotalRevenue
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimProduct p ON fis.ProductKey = p.ProductKey
+INNER JOIN dbo.DimProductSubcategory ps ON p.ProductSubcategoryKey = ps.ProductSubcategoryKey
+INNER JOIN dbo.DimProductCategory pc ON ps.ProductCategoryKey = pc.ProductCategoryKey
+GROUP BY pc.EnglishProductCategoryName
+ORDER BY TotalRevenue ASC
+
+EXAMPLE - With Ranking Function (Alternative):
+SELECT
+    p.EnglishProductName,
+    SUM(fis.SalesAmount) AS TotalRevenue,
+    RANK() OVER (ORDER BY SUM(fis.SalesAmount) DESC) AS RevenueRank
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimProduct p ON fis.ProductKey = p.ProductKey
+GROUP BY p.EnglishProductName, p.ProductKey
+ORDER BY RevenueRank
+
+TIES HANDLING:
+- TOP 10 returns exactly 10 rows (or fewer if less data exists)
+- If ties exist, SQL Server picks arbitrarily unless ORDER BY includes tiebreaker
+- Use TOP 10 WITH TIES to include all tied values (may return >10 rows)
+
+COMMON TOP N QUERIES:
+- Top products by revenue
+- Top customers by purchases
+- Top territories by sales
+- Best performing employees
+- Most popular product categories
+- Highest margin products
+
+NOTES:
+- Always use ORDER BY with TOP (required for deterministic results)
+- Include tiebreaker columns in ORDER BY if precision matters
+- For "percent" rankings (top 10%), use TOP 10 PERCENT
+- Consider using RANK() or ROW_NUMBER() for more complex ranking logic

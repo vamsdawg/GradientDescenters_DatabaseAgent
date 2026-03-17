@@ -1,0 +1,68 @@
+TABLE: dbo.DimPromotion
+======================================================================
+
+DESCRIPTION:
+Marketing promotion dimension. Tracks promotional campaigns and discount programs applied to sales.
+
+TYPE: Dimension Table
+
+======================================================================
+COLUMNS:
+======================================================================
+
+PromotionKey
+  Type: int NOT NULL [PRIMARY KEY]
+
+PromotionAlternateKey
+  Type: int NULL
+
+EnglishPromotionName
+  Type: nvarchar(255.0) NULL
+
+SpanishPromotionName
+  Type: nvarchar(255.0) NULL
+
+FrenchPromotionName
+  Type: nvarchar(255.0) NULL
+
+DiscountPct
+  Type: float NULL
+
+EnglishPromotionType
+  Type: nvarchar(50.0) NULL
+
+SpanishPromotionType
+  Type: nvarchar(50.0) NULL
+
+FrenchPromotionType
+  Type: nvarchar(50.0) NULL
+
+EnglishPromotionCategory
+  Type: nvarchar(50.0) NULL
+
+SpanishPromotionCategory
+  Type: nvarchar(50.0) NULL
+
+FrenchPromotionCategory
+  Type: nvarchar(50.0) NULL
+
+StartDate
+  Type: datetime NOT NULL
+
+EndDate
+  Type: datetime NULL
+
+MinQty
+  Type: int NULL
+
+MaxQty
+  Type: int NULL
+
+======================================================================
+USAGE NOTES:
+======================================================================
+
+
+======================================================================
+END OF dbo.DimPromotion DOCUMENTATION
+======================================================================

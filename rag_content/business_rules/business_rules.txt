@@ -1,0 +1,292 @@
+BUSINESS RULES - ADVENTUREWORKSDW2025 DATABASE
+
+===============================================
+METRIC DEFINITIONS
+===============================================
+
+Revenue / Sales:
+  - Definition: Total amount charged to customers including tax
+  - Source: SalesAmount column from FactInternetSales or FactResellerSales
+  - Formula: SUM(SalesAmount)
+  - Includes: Product price + tax + freight
+  - Currency: Values are in USD (or use CurrencyKey for multi-currency)
+
+Net Revenue:
+  - Definition: Sales amount minus tax
+  - Formula: SUM(SalesAmount - TaxAmt)
+  - Use when: Customer wants revenue excluding tax
+
+Profit / Gross Profit:
+  - Definition: Sales minus product cost
+  - Formula: SUM(SalesAmount - TotalProductCost)
+  - Note: Does NOT include operating expenses, only COGS (cost of goods sold)
+
+Profit Margin:
+  - Definition: Profit as percentage of sales
+  - Formula: (SUM(SalesAmount - TotalProductCost) / NULLIF(SUM(SalesAmount), 0)) * 100
+  - Format: Express as percentage (e.g., 45.2% margin)
+  - Use NULLIF to avoid division by zero
+
+Units Sold / Quantity:
+  - Definition: Total number of items sold
+  - Formula: SUM(OrderQuantity)
+  - Source: OrderQuantity from fact tables
+
+Average Order Value (AOV):
+  - Definition: Revenue per order
+  - Formula: SUM(SalesAmount) / NULLIF(COUNT(DISTINCT SalesOrderNumber), 0)
+  - Critical: Use DISTINCT on SalesOrderNumber
+  - Why: Multi-line orders would inflate average without DISTINCT
+
+Order Count:
+  - Definition: Number of unique orders
+  - Formula: COUNT(DISTINCT SalesOrderNumber)
+  - Critical: Must use DISTINCT since orders can have multiple lines
+
+Customer Count:
+  - Definition: Number of unique customers
+  - Formula: COUNT(DISTINCT CustomerKey)
+  - Use: For customer metrics, always use DISTINCT
+
+===============================================
+PRIVACY & CONFIDENTIALITY RULES
+===============================================
+
+NEVER INCLUDE IN SELECT STATEMENTS:
+
+Customer Confidential Fields:
+  - EmailAddress
+  - Phone
+  - AddressLine1
+  - AddressLine2
+  
+Employee Confidential Fields:
+  - EmailAddress
+  - Phone
+  - LoginID
+  - NationalIDNumber
+  
+Sales Confidential Fields:
+  - Individual SalesQuota amounts (from FactSalesQuota)
+  - SalesQuotaDate
+  
+Reason: Privacy compliance, data protection regulations
+
+ALLOWED FOR CUSTOMER/EMPLOYEE IDENTIFICATION:
+
+Customer (Safe to SELECT):
+  - CustomerKey
+  - FirstName, LastName
+  - BirthDate
+  - Gender
+  - MaritalStatus
+  - YearlyIncome
+  - TotalChildren
+  - NumberChildrenAtHome
+  - City, StateProvinceName, CountryRegionName (from Geography)
+  
+Employee (Safe to SELECT):
+  - EmployeeKey
+  - FirstName, LastName
+  - Title
+  - DepartmentName
+  - StartDate, EndDate
+
+===============================================
+CUSTOMER SEGMENTATION RULES
+===============================================
+
+High-Value Customer:
+  - Criteria: YearlyIncome > 100,000
+  - SQL: WHERE YearlyIncome > 100000
+  
+Medium-Value Customer:
+  - Criteria: YearlyIncome BETWEEN 50,000 AND 100,000
+  - SQL: WHERE YearlyIncome BETWEEN 50000 AND 100000
+  
+High-Income Household:
+  - Criteria: YearlyIncome >= 80,000
+  - Common in bikes category (expensive products)
+
+Active Customer:
+  - Criteria: Made purchase (exists in FactInternetSales or FactResellerSales)
+  - SQL: Use INNER JOIN to fact tables
+  
+Family Household:
+  - Criteria: TotalChildren >= 2
+  - SQL: WHERE TotalChildren >= 2
+
+===============================================
+PRODUCT CLASSIFICATION RULES
+===============================================
+
+High-End Products:
+  - Criteria: ListPrice > 1000
+  - Typically: Road bikes, mountain bikes
+  - SQL: WHERE ListPrice > 1000
+
+Mid-Range Products:
+  - Criteria: ListPrice BETWEEN 500 AND 1000
+  - SQL: WHERE ListPrice BETWEEN 500 AND 1000
+
+Budget Products:
+  - Criteria: ListPrice < 500
+  - Typically: Accessories, components, clothing
+
+Finished Goods:
+  - Criteria: FinishedGoodsFlag = 1
+  - Use: Filter products to show only saleable items
+  - SQL: WHERE FinishedGoodsFlag = 1
+
+Product Categories (Main):
+  1. Bikes - High value, core business
+  2. Accessories - High volume, lower value
+  3. Clothing - Seasonal demand
+  4. Components - Parts for assembly/repair
+
+===============================================
+TIME PERIOD DEFINITIONS
+===============================================
+
+Data Range:
+  - AdventureWorksDW contains data from approximately 2010-2014
+  - Most complete data: 2011-2013
+  - Use years 2011, 2012, or 2013 in example queries
+
+Current Year:
+  - Definition: Most recent year with data
+  - Query: SELECT MAX(CalendarYear) FROM DimDate
+  - Then filter: WHERE CalendarYear = [result]
+
+Fiscal Year:
+  - Definition: Company's financial year
+  - Source: FiscalYear column in DimDate
+  - May differ from CalendarYear
+
+Quarter:
+  - Source: CalendarQuarter (values: 1, 2, 3, 4)
+  - Q1 = January-March
+  - Q2 = April-June
+  - Q3 = July-September
+  - Q4 = October-December
+
+Holiday Season:
+  - Definition: November-December
+  - SQL: WHERE MonthNumberOfYear IN (11, 12)
+  - Typically highest sales period
+
+Order Date vs Ship Date:
+  - OrderDateKey: When order was placed (USE THIS for sales analysis)
+  - ShipDateKey: When order was shipped
+  - DueDateKey: Expected delivery date
+  - Default: Always use OrderDateKey unless specifically analyzing shipping/delivery
+
+===============================================
+GEOGRAPHY / TERRITORY RULES
+===============================================
+
+Sales Territory vs Customer Location:
+  - Sales Territory: DimSalesTerritory (assigned sales region)
+  - Customer Geography: DimGeography (where customer lives)
+  - These can be DIFFERENT - don't confuse them
+
+North America:
+  - Countries: United States, Canada
+  - SQL: WHERE EnglishCountryRegionName IN ('United States', 'Canada')
+
+Europe:
+  - Countries: United Kingdom, France, Germany, and others
+  - SQL: WHERE SalesTerritoryGroup = 'Europe'
+
+Domestic (US Only):
+  - SQL: WHERE EnglishCountryRegionName = 'United States'
+
+International (Non-US):
+  - SQL: WHERE EnglishCountryRegionName <> 'United States'
+
+===============================================
+FIELD NAMING CONVENTIONS
+===============================================
+
+When user says → Use this column:
+  "Product Name" → EnglishProductName
+  "Customer Name" → FirstName + ' ' + LastName
+  "Country" → EnglishCountryRegionName
+  "State" → StateProvinceName
+  "Category" → EnglishProductCategoryName
+  "Subcategory" → EnglishProductSubcategoryName
+  "Order Number" → SalesOrderNumber
+  "Revenue" → SalesAmount
+  "Cost" → TotalProductCost (for sold items) or StandardCost (for products)
+  "Price" → UnitPrice (transaction price) or ListPrice (standard price)
+  "Quantity" → OrderQuantity
+  "Date" → Join to DimDate via OrderDateKey
+
+English vs Non-English Fields:
+  - Always prefer English* columns for display (e.g., EnglishProductName)
+  - French, Spanish versions exist but not commonly used
+
+===============================================
+DATA QUALITY NOTES
+===============================================
+
+NULL Values:
+  - Product.Color: NULL means color not applicable (e.g., components)
+  - Product.Size: NULL for items without size variations
+  - Customer fields: Some NULL values for older records
+
+Internet Sales Only:
+  - FactInternetSales: Online/web sales ONLY
+  - Does NOT include retail store sales
+  - For B2B/wholesale: Use FactResellerSales
+
+Multiple Fact Tables:
+  - FactInternetSales: B2C online sales
+  - FactResellerSales: B2B wholesale sales
+  - FactProductInventory: Inventory levels
+  - FactSalesQuota: Sales targets (treat as confidential)
+  - FactCurrencyRate: Exchange rates
+  - FactFinance: Financial data
+
+===============================================
+SQL BEST PRACTICES
+===============================================
+
+1. Schema Prefix:
+   - Always use: dbo.TableName
+   - Never use: TableName (without schema)
+
+2. Limiting Results:
+   - Use TOP n to limit rows: SELECT TOP 100 ...
+   - Prevents overwhelming result sets
+
+3. Date Filtering:
+   - ALWAYS join to DimDate using appropriate DateKey
+   - Use CalendarYear, CalendarQuarter for filtering
+   - Don't try to parse date strings
+
+4. Meaningful Aliases:
+   - Use: SUM(SalesAmount) AS TotalRevenue
+   - Not: SUM(SalesAmount) AS Column1
+
+5. JOIN Types:
+   - Use INNER JOIN when relationship is required
+   - Use LEFT JOIN only when optional
+   - Most dimension joins should be INNER
+
+6. GROUP BY with Keys:
+   - Include primary key in GROUP BY even if not in SELECT
+   - Example: GROUP BY ProductName, ProductKey
+   - Ensures uniqueness for products with duplicate names
+
+7. NULL Handling:
+   - Use NULLIF for division: x / NULLIF(y, 0)
+   - Use ISNULL or COALESCE for display: ISNULL(Color, 'N/A')
+
+8. String Concatenation:
+   - Use +: FirstName + ' ' + LastName
+   - Or CONCAT: CONCAT(FirstName, ' ', LastName)
+
+===============================================
+END OF BUSINESS RULES
+===============================================

@@ -1,0 +1,65 @@
+PATTERN: Product Category Hierarchy Analysis
+
+WHEN TO USE:
+- Questions about product categories, subcategories, or product groupings
+- Sales analysis by category or subcategory
+- Product performance by category level
+- Any mention of "category", "subcategory", "bikes", "accessories", "components"
+
+TABLES INVOLVED:
+- FactInternetSales (fact table - optional, if analyzing sales)
+- DimProduct (dimension - product details)
+- DimProductSubcategory (dimension - subcategory level)
+- DimProductCategory (dimension - top level categories)
+
+PRODUCT HIERARCHY:
+Category (top level) → Subcategory → Product
+Example: Bikes → Mountain Bikes → Mountain-200 Black, 42
+
+JOIN PATH (MUST GO THROUGH ALL LEVELS):
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimProduct p ON fis.ProductKey = p.ProductKey
+INNER JOIN dbo.DimProductSubcategory ps ON p.ProductSubcategoryKey = ps.ProductSubcategoryKey
+INNER JOIN dbo.DimProductCategory pc ON ps.ProductCategoryKey = pc.ProductCategoryKey
+
+CRITICAL: Never skip DimProductSubcategory even if only analyzing category level
+
+KEY COLUMNS:
+- DimProductCategory.EnglishProductCategoryName (e.g., "Bikes", "Accessories")
+- DimProductSubcategory.EnglishProductSubcategoryName (e.g., "Mountain Bikes", "Helmets")
+- DimProduct.EnglishProductName (individual product names)
+
+MAIN PRODUCT CATEGORIES:
+1. Bikes (high value, low volume)
+2. Accessories (low value, high volume)
+3. Clothing (seasonal)
+4. Components (parts)
+
+EXAMPLE QUERY - Sales by Category:
+SELECT
+    pc.EnglishProductCategoryName AS Category,
+    SUM(fis.SalesAmount) AS TotalRevenue,
+    SUM(fis.OrderQuantity) AS TotalUnitsSold,
+    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimProduct p ON fis.ProductKey = p.ProductKey
+INNER JOIN dbo.DimProductSubcategory ps ON p.ProductSubcategoryKey = ps.ProductSubcategoryKey
+INNER JOIN dbo.DimProductCategory pc ON ps.ProductCategoryKey = pc.ProductCategoryKey
+GROUP BY pc.EnglishProductCategoryName
+ORDER BY TotalRevenue DESC
+
+EXAMPLE QUERY - Just Product Categories (No Sales):
+SELECT
+    pc.EnglishProductCategoryName AS Category,
+    COUNT(DISTINCT ps.ProductSubcategoryKey) AS SubcategoryCount,
+    COUNT(p.ProductKey) AS ProductCount
+FROM dbo.DimProduct p
+INNER JOIN dbo.DimProductSubcategory ps ON p.ProductSubcategoryKey = ps.ProductSubcategoryKey
+INNER JOIN dbo.DimProductCategory pc ON ps.ProductCategoryKey = pc.ProductCategoryKey
+WHERE p.FinishedGoodsFlag = 1
+GROUP BY pc.EnglishProductCategoryName
+
+NOTES:
+- ALWAYS join through all three levels (Product → Subcategory → Category)
+- Use English*Name columns for display
+- Filter by FinishedGoodsFlag = 1 when querying products only (not sales)

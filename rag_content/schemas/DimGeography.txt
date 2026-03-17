@@ -1,0 +1,59 @@
+TABLE: dbo.DimGeography
+======================================================================
+
+DESCRIPTION:
+Geographic location dimension containing countries, states/provinces, and cities. Used for customer and reseller locations.
+
+TYPE: Dimension Table
+
+======================================================================
+COLUMNS:
+======================================================================
+
+GeographyKey
+  Type: int NOT NULL [PRIMARY KEY]
+
+City
+  Type: nvarchar(30.0) NULL
+
+StateProvinceCode
+  Type: nvarchar(3.0) NULL
+
+StateProvinceName
+  Type: nvarchar(50.0) NULL
+
+CountryRegionCode
+  Type: nvarchar(3.0) NULL
+
+EnglishCountryRegionName
+  Type: nvarchar(50.0) NULL
+
+SpanishCountryRegionName
+  Type: nvarchar(50.0) NULL
+
+FrenchCountryRegionName
+  Type: nvarchar(50.0) NULL
+
+PostalCode
+  Type: nvarchar(15.0) NULL
+
+SalesTerritoryKey
+  Type: int NULL [FK → dbo.DimSalesTerritory.SalesTerritoryKey]
+
+IpAddressLocator
+  Type: nvarchar(15.0) NULL
+
+======================================================================
+FOREIGN KEY RELATIONSHIPS:
+======================================================================
+
+  SalesTerritoryKey → dbo.DimSalesTerritory.SalesTerritoryKey
+
+======================================================================
+USAGE NOTES:
+======================================================================
+
+
+======================================================================
+END OF dbo.DimGeography DOCUMENTATION
+======================================================================

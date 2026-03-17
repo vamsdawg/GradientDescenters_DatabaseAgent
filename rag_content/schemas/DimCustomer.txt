@@ -1,0 +1,118 @@
+TABLE: dbo.DimCustomer
+======================================================================
+
+DESCRIPTION:
+Customer master dimension. Stores customer demographic and profile information. Links to DimGeography for location.
+
+TYPE: Dimension Table
+
+======================================================================
+COLUMNS:
+======================================================================
+
+CustomerKey
+  Type: int NOT NULL [PRIMARY KEY]
+
+GeographyKey
+  Type: int NULL [FK → dbo.DimGeography.GeographyKey]
+
+CustomerAlternateKey
+  Type: nvarchar(15.0) NOT NULL
+  Sample: (numeric keys)
+
+Title
+  Type: nvarchar(8.0) NULL
+
+FirstName
+  Type: nvarchar(50.0) NULL
+
+MiddleName
+  Type: nvarchar(50.0) NULL
+
+LastName
+  Type: nvarchar(50.0) NULL
+
+NameStyle
+  Type: bit NULL
+
+BirthDate
+  Type: date NULL
+
+MaritalStatus
+  Type: nchar(1.0) NULL
+
+Suffix
+  Type: nvarchar(10.0) NULL
+
+Gender
+  Type: nvarchar(1.0) NULL
+
+EmailAddress
+  Type: nvarchar(50.0) NULL
+
+YearlyIncome
+  Type: money NULL
+
+TotalChildren
+  Type: tinyint NULL
+
+NumberChildrenAtHome
+  Type: tinyint NULL
+
+EnglishEducation
+  Type: nvarchar(40.0) NULL
+
+SpanishEducation
+  Type: nvarchar(40.0) NULL
+
+FrenchEducation
+  Type: nvarchar(40.0) NULL
+
+EnglishOccupation
+  Type: nvarchar(100.0) NULL
+
+SpanishOccupation
+  Type: nvarchar(100.0) NULL
+
+FrenchOccupation
+  Type: nvarchar(100.0) NULL
+
+HouseOwnerFlag
+  Type: nchar(1.0) NULL
+
+NumberCarsOwned
+  Type: tinyint NULL
+
+AddressLine1
+  Type: nvarchar(120.0) NULL
+
+AddressLine2
+  Type: nvarchar(120.0) NULL
+
+Phone
+  Type: nvarchar(20.0) NULL
+
+DateFirstPurchase
+  Type: date NULL
+
+CommuteDistance
+  Type: nvarchar(15.0) NULL
+
+======================================================================
+FOREIGN KEY RELATIONSHIPS:
+======================================================================
+
+  GeographyKey → dbo.DimGeography.GeographyKey
+
+======================================================================
+USAGE NOTES:
+======================================================================
+
+- NEVER include EmailAddress, Phone, AddressLine* (confidential)
+- Join to DimGeography for location information
+- YearlyIncome useful for customer segmentation
+- Use FirstName + ' ' + LastName for full name
+
+======================================================================
+END OF dbo.DimCustomer DOCUMENTATION
+======================================================================

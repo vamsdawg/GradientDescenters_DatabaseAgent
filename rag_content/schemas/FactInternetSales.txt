@@ -1,0 +1,116 @@
+TABLE: dbo.FactInternetSales
+======================================================================
+
+DESCRIPTION:
+Online/internet sales transactions (B2C). Each row represents one line item from a customer order. Primary fact table for direct-to-consumer sales analysis.
+
+TYPE: Fact Table
+
+======================================================================
+COLUMNS:
+======================================================================
+
+ProductKey
+  Type: int NOT NULL [FK → dbo.DimProduct.ProductKey]
+
+OrderDateKey
+  Type: int NOT NULL [FK → dbo.DimDate.DateKey]
+
+DueDateKey
+  Type: int NOT NULL [FK → dbo.DimDate.DateKey]
+
+ShipDateKey
+  Type: int NOT NULL [FK → dbo.DimDate.DateKey]
+
+CustomerKey
+  Type: int NOT NULL [FK → dbo.DimCustomer.CustomerKey]
+
+PromotionKey
+  Type: int NOT NULL [FK → dbo.DimPromotion.PromotionKey]
+
+CurrencyKey
+  Type: int NOT NULL [FK → dbo.DimCurrency.CurrencyKey]
+
+SalesTerritoryKey
+  Type: int NOT NULL [FK → dbo.DimSalesTerritory.SalesTerritoryKey]
+
+SalesOrderNumber
+  Type: nvarchar(20.0) NOT NULL [PRIMARY KEY]
+
+SalesOrderLineNumber
+  Type: tinyint NOT NULL [PRIMARY KEY]
+
+RevisionNumber
+  Type: tinyint NOT NULL
+
+OrderQuantity
+  Type: smallint NOT NULL
+
+UnitPrice
+  Type: money NOT NULL
+
+ExtendedAmount
+  Type: money NOT NULL
+
+UnitPriceDiscountPct
+  Type: float NOT NULL
+
+DiscountAmount
+  Type: float NOT NULL
+
+ProductStandardCost
+  Type: money NOT NULL
+
+TotalProductCost
+  Type: money NOT NULL
+
+SalesAmount
+  Type: money NOT NULL
+
+TaxAmt
+  Type: money NOT NULL
+
+Freight
+  Type: money NOT NULL
+
+CarrierTrackingNumber
+  Type: nvarchar(25.0) NULL
+
+CustomerPONumber
+  Type: nvarchar(25.0) NULL
+
+OrderDate
+  Type: datetime NULL
+
+DueDate
+  Type: datetime NULL
+
+ShipDate
+  Type: datetime NULL
+
+======================================================================
+FOREIGN KEY RELATIONSHIPS:
+======================================================================
+
+  CurrencyKey → dbo.DimCurrency.CurrencyKey
+  CustomerKey → dbo.DimCustomer.CustomerKey
+  DueDateKey → dbo.DimDate.DateKey
+  OrderDateKey → dbo.DimDate.DateKey
+  ProductKey → dbo.DimProduct.ProductKey
+  PromotionKey → dbo.DimPromotion.PromotionKey
+  SalesTerritoryKey → dbo.DimSalesTerritory.SalesTerritoryKey
+  ShipDateKey → dbo.DimDate.DateKey
+
+======================================================================
+USAGE NOTES:
+======================================================================
+
+- Primary fact table for internet/online sales analysis
+- Join to DimProduct, DimCustomer, DimDate for complete analysis
+- OrderDateKey is primary date for sales (not ShipDateKey)
+- SalesAmount includes tax and freight
+- Use DISTINCT on SalesOrderNumber for order counting
+
+======================================================================
+END OF dbo.FactInternetSales DOCUMENTATION
+======================================================================

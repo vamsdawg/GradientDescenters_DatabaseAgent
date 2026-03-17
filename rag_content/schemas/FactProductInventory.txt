@@ -1,0 +1,48 @@
+TABLE: dbo.FactProductInventory
+======================================================================
+
+DESCRIPTION:
+Product inventory levels over time. Tracks stock quantities at different points in time. Used for inventory analysis and stock management.
+
+TYPE: Fact Table
+
+======================================================================
+COLUMNS:
+======================================================================
+
+ProductKey
+  Type: int NOT NULL [PRIMARY KEY] [FK → dbo.DimProduct.ProductKey]
+
+DateKey
+  Type: int NOT NULL [PRIMARY KEY] [FK → dbo.DimDate.DateKey]
+
+MovementDate
+  Type: date NOT NULL
+
+UnitCost
+  Type: money NOT NULL
+
+UnitsIn
+  Type: int NOT NULL
+
+UnitsOut
+  Type: int NOT NULL
+
+UnitsBalance
+  Type: int NOT NULL
+
+======================================================================
+FOREIGN KEY RELATIONSHIPS:
+======================================================================
+
+  DateKey → dbo.DimDate.DateKey
+  ProductKey → dbo.DimProduct.ProductKey
+
+======================================================================
+USAGE NOTES:
+======================================================================
+
+
+======================================================================
+END OF dbo.FactProductInventory DOCUMENTATION
+======================================================================

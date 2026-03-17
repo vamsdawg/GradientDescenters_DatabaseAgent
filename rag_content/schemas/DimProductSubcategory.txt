@@ -1,0 +1,44 @@
+TABLE: dbo.DimProductSubcategory
+======================================================================
+
+DESCRIPTION:
+Mid-level product groupings under categories (e.g., Mountain Bikes, Road Bikes, Helmets). Links categories to products.
+
+TYPE: Dimension Table
+
+======================================================================
+COLUMNS:
+======================================================================
+
+ProductSubcategoryKey
+  Type: int NOT NULL [PRIMARY KEY]
+
+ProductSubcategoryAlternateKey
+  Type: int NULL
+
+EnglishProductSubcategoryName
+  Type: nvarchar(50.0) NOT NULL
+
+SpanishProductSubcategoryName
+  Type: nvarchar(50.0) NOT NULL
+
+FrenchProductSubcategoryName
+  Type: nvarchar(50.0) NOT NULL
+
+ProductCategoryKey
+  Type: int NULL [FK → dbo.DimProductCategory.ProductCategoryKey]
+
+======================================================================
+FOREIGN KEY RELATIONSHIPS:
+======================================================================
+
+  ProductCategoryKey → dbo.DimProductCategory.ProductCategoryKey
+
+======================================================================
+USAGE NOTES:
+======================================================================
+
+
+======================================================================
+END OF dbo.DimProductSubcategory DOCUMENTATION
+======================================================================

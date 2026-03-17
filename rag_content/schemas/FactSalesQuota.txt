@@ -1,0 +1,48 @@
+TABLE: dbo.FactSalesQuota
+======================================================================
+
+DESCRIPTION:
+Sales targets assigned to sales employees by time period. Contains quota amounts by employee and date. Considered confidential data.
+
+TYPE: Fact Table
+
+======================================================================
+COLUMNS:
+======================================================================
+
+SalesQuotaKey
+  Type: int NOT NULL [PRIMARY KEY]
+
+EmployeeKey
+  Type: int NOT NULL [FK → dbo.DimEmployee.EmployeeKey]
+
+DateKey
+  Type: int NOT NULL [FK → dbo.DimDate.DateKey]
+
+CalendarYear
+  Type: smallint NOT NULL
+
+CalendarQuarter
+  Type: tinyint NOT NULL
+
+SalesAmountQuota
+  Type: money NOT NULL
+
+Date
+  Type: datetime NULL
+
+======================================================================
+FOREIGN KEY RELATIONSHIPS:
+======================================================================
+
+  DateKey → dbo.DimDate.DateKey
+  EmployeeKey → dbo.DimEmployee.EmployeeKey
+
+======================================================================
+USAGE NOTES:
+======================================================================
+
+
+======================================================================
+END OF dbo.FactSalesQuota DOCUMENTATION
+======================================================================

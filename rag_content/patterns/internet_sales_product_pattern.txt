@@ -1,0 +1,44 @@
+PATTERN: Internet Sales with Product Information
+
+WHEN TO USE:
+- User asks about internet sales and products together
+- Questions about product performance, sales by product
+- Revenue analysis by product attributes (name, color, size, etc.)
+
+TABLES INVOLVED:
+- FactInternetSales (fact table - sales transactions)
+- DimProduct (dimension - product details)
+
+JOIN PATH:
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimProduct p ON fis.ProductKey = p.ProductKey
+
+KEY COLUMNS TO USE:
+From FactInternetSales:
+- SalesAmount (revenue)
+- OrderQuantity (units sold)
+- UnitPrice (price per unit)
+- TotalProductCost (cost)
+- SalesOrderNumber (order ID)
+
+From DimProduct:
+- EnglishProductName (product name for display)
+- Color, Size (product attributes)
+- ListPrice (standard price)
+- StandardCost (cost to manufacture)
+
+EXAMPLE QUERY:
+SELECT
+    p.EnglishProductName,
+    SUM(fis.SalesAmount) AS TotalRevenue,
+    SUM(fis.OrderQuantity) AS UnitsSold,
+    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimProduct p ON fis.ProductKey = p.ProductKey
+GROUP BY p.EnglishProductName, p.ProductKey
+ORDER BY TotalRevenue DESC
+
+NOTES:
+- Always use INNER JOIN (not LEFT JOIN) as every sale has a product
+- Include ProductKey in GROUP BY even if not in SELECT (ensures uniqueness)
+- Use EnglishProductName for display (not ProductAlternateKey)

@@ -1,0 +1,38 @@
+TABLE: dbo.DimSalesTerritory
+======================================================================
+
+DESCRIPTION:
+Sales territory dimension defining geographic sales regions. Different from customer location - represents assigned sales area.
+
+TYPE: Dimension Table
+
+======================================================================
+COLUMNS:
+======================================================================
+
+SalesTerritoryKey
+  Type: int NOT NULL [PRIMARY KEY]
+
+SalesTerritoryAlternateKey
+  Type: int NULL
+
+SalesTerritoryRegion
+  Type: nvarchar(50.0) NOT NULL
+
+SalesTerritoryCountry
+  Type: nvarchar(50.0) NOT NULL
+
+SalesTerritoryGroup
+  Type: nvarchar(50.0) NULL
+
+SalesTerritoryImage
+  Type: varbinary NULL
+
+======================================================================
+USAGE NOTES:
+======================================================================
+
+
+======================================================================
+END OF dbo.DimSalesTerritory DOCUMENTATION
+======================================================================

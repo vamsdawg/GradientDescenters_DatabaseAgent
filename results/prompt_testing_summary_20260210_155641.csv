@@ -1,6 +1,6 @@
 Prompt Template,Expected,Valid Syntax,Executable,Success Rate,Privacy Compliant,Privacy Violations,Avg Latency
-Basic Instruction,Poor,0/10,0/10,0.0%,5/7,2,3.55s
-Detailed Instruction,Fair,0/10,0/10,0.0%,3/7,7,4.69s
-Few-Shot Learning,Good,10/10,10/10,100.0%,5/7,3,1.60s
-Chain-of-Thought,Better,0/10,0/10,0.0%,6/7,1,7.19s
-Advanced + Privacy,Best,10/10,9/10,90.0%,6/7,1,1.95s
+Basic Instruction,Poor,0/10,0/10,0.00%,7-May,2,3.55s
+Detailed Instruction,Fair,0/10,0/10,0.00%,7-Mar,7,4.69s
+Few-Shot Learning,Good,10-Oct,10-Oct,100.00%,7-May,3,1.60s
+Chain-of-Thought,Better,0/10,0/10,0.00%,7-Jun,1,7.19s
+Advanced + Privacy,Best,10-Oct,10-Sep,90.00%,7-Jun,1,1.95s

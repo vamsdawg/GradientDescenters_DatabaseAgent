@@ -1,0 +1,35 @@
+TABLE: dbo.DimProductCategory
+======================================================================
+
+DESCRIPTION:
+Top-level product categories (Bikes, Accessories, Clothing, Components). Part of product hierarchy.
+
+TYPE: Dimension Table
+
+======================================================================
+COLUMNS:
+======================================================================
+
+ProductCategoryKey
+  Type: int NOT NULL [PRIMARY KEY]
+
+ProductCategoryAlternateKey
+  Type: int NULL
+
+EnglishProductCategoryName
+  Type: nvarchar(50.0) NOT NULL
+
+SpanishProductCategoryName
+  Type: nvarchar(50.0) NOT NULL
+
+FrenchProductCategoryName
+  Type: nvarchar(50.0) NOT NULL
+
+======================================================================
+USAGE NOTES:
+======================================================================
+
+
+======================================================================
+END OF dbo.DimProductCategory DOCUMENTATION
+======================================================================

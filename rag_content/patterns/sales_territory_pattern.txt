@@ -1,0 +1,59 @@
+PATTERN: Sales Territory Analysis
+
+WHEN TO USE:
+- Questions about sales territories, regions
+- Territory performance analysis
+- "By territory", "by region", "which territory"
+
+TABLES INVOLVED:
+- FactInternetSales (fact table - sales transactions)
+- DimSalesTerritory (dimension - territory information)
+
+JOIN PATH:
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimSalesTerritory st ON fis.SalesTerritoryKey = st.SalesTerritoryKey
+
+KEY TERRITORY COLUMNS:
+- SalesTerritoryRegion (region name, e.g., "Northwest", "Southwest", "Canada")
+- SalesTerritoryCountry (country, e.g., "United States", "Canada", "United Kingdom")
+- SalesTerritoryGroup (group, e.g., "North America", "Europe", "Pacific")
+
+IMPORTANT DISTINCTION:
+Sales Territory vs Customer Geography:
+- Sales Territory: Assigned sales region (from DimSalesTerritory)
+- Customer Geography: Where customer is located (from DimGeography)
+- These can be DIFFERENT - customer in California might be in "Southwest" or "Pacific" territory
+
+EXAMPLE QUERY - Sales by Territory:
+SELECT
+    st.SalesTerritoryRegion,
+    st.SalesTerritoryCountry,
+    SUM(fis.SalesAmount) AS TotalRevenue,
+    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount,
+    COUNT(DISTINCT fis.CustomerKey) AS UniqueCustomers
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimSalesTerritory st ON fis.SalesTerritoryKey = st.SalesTerritoryKey
+GROUP BY st.SalesTerritoryRegion, st.SalesTerritoryCountry
+ORDER BY TotalRevenue DESC
+
+EXAMPLE QUERY - Territory Performance with Rankings:
+SELECT
+    st.SalesTerritoryRegion,
+    SUM(fis.SalesAmount) AS TotalRevenue,
+    RANK() OVER (ORDER BY SUM(fis.SalesAmount) DESC) AS RevenueRank,
+    CAST(SUM(fis.SalesAmount) / NULLIF(COUNT(DISTINCT fis.SalesOrderNumber), 0) AS DECIMAL(10,2)) AS AvgOrderValue
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimSalesTerritory st ON fis.SalesTerritoryKey = st.SalesTerritoryKey
+GROUP BY st.SalesTerritoryRegion
+ORDER BY TotalRevenue DESC
+
+TERRITORIES IN DATA:
+- North America: Northwest, Southwest, Canada, Central
+- Europe: United Kingdom, France, Germany
+- Pacific: Australia
+
+NOTES:
+- Use SalesTerritoryRegion for most queries (most specific)
+- SalesTerritoryGroup for high-level analysis (North America, Europe, Pacific)
+- DimSalesTerritory also connects to DimEmployee (sales reps assigned to territories)
+- Use INNER JOIN as every internet sale has a territory assigned

@@ -1,0 +1,70 @@
+PATTERN: Customer Geography Analysis
+
+WHEN TO USE:
+- Questions about customer locations (country, state, city)
+- Sales by geography/location
+- Customer distribution analysis
+- Any mention of countries, regions, states, cities
+
+TABLES INVOLVED:
+- DimCustomer (dimension - customer details)
+- DimGeography (dimension - location information)
+- FactInternetSales (fact table - optional, if analyzing sales by location)
+
+JOIN PATH:
+FROM dbo.DimCustomer c
+INNER JOIN dbo.DimGeography g ON c.GeographyKey = g.GeographyKey
+
+WITH SALES DATA:
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimCustomer c ON fis.CustomerKey = c.CustomerKey
+INNER JOIN dbo.DimGeography g ON c.GeographyKey = g.GeographyKey
+
+KEY GEOGRAPHY COLUMNS:
+- EnglishCountryRegionName (country, e.g., "United States", "United Kingdom")
+- StateProvinceName (state/province, e.g., "California", "Ontario")
+- City (city name)
+- PostalCode (zip/postal code)
+
+KEY CUSTOMER COLUMNS (ALLOWED - NOT CONFIDENTIAL):
+- CustomerKey (ID)
+- FirstName, LastName (name)
+- BirthDate, Gender (demographics)
+- YearlyIncome (income range)
+- MaritalStatus, TotalChildren (household info)
+
+CONFIDENTIAL - NEVER INCLUDE:
+- EmailAddress
+- Phone
+- AddressLine1, AddressLine2
+
+GEOGRAPHIC HIERARCHY:
+Country → State/Province → City
+
+EXAMPLE QUERY - Sales by Country:
+SELECT
+    g.EnglishCountryRegionName AS Country,
+    SUM(fis.SalesAmount) AS TotalRevenue,
+    COUNT(DISTINCT fis.CustomerKey) AS UniqueCustomers,
+    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimCustomer c ON fis.CustomerKey = c.CustomerKey
+INNER JOIN dbo.DimGeography g ON c.GeographyKey = g.GeographyKey
+GROUP BY g.EnglishCountryRegionName
+ORDER BY TotalRevenue DESC
+
+EXAMPLE QUERY - Customer Distribution:
+SELECT
+    g.EnglishCountryRegionName AS Country,
+    g.StateProvinceName AS State,
+    COUNT(c.CustomerKey) AS CustomerCount,
+    AVG(c.YearlyIncome) AS AvgIncome
+FROM dbo.DimCustomer c
+INNER JOIN dbo.DimGeography g ON c.GeographyKey = g.GeographyKey
+GROUP BY g.EnglishCountryRegionName, g.StateProvinceName
+ORDER BY CustomerCount DESC
+
+NOTES:
+- Use EnglishCountryRegionName for country (not CountryRegionCode)
+- DimGeography also links to DimSalesTerritory (sales territories are different from customer geography)
+- Always respect privacy rules - no email, phone, address

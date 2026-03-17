@@ -1,0 +1,87 @@
+TABLE: dbo.DimReseller
+======================================================================
+
+DESCRIPTION:
+Reseller/wholesale customer master. Contains business customer information including business type and size.
+
+TYPE: Dimension Table
+
+======================================================================
+COLUMNS:
+======================================================================
+
+ResellerKey
+  Type: int NOT NULL [PRIMARY KEY]
+
+GeographyKey
+  Type: int NULL [FK → dbo.DimGeography.GeographyKey]
+
+ResellerAlternateKey
+  Type: nvarchar(15.0) NULL
+  Sample: (numeric keys)
+
+Phone
+  Type: nvarchar(25.0) NULL
+
+BusinessType
+  Type: varchar(20.0) NOT NULL
+
+ResellerName
+  Type: nvarchar(50.0) NOT NULL
+
+NumberEmployees
+  Type: int NULL
+
+OrderFrequency
+  Type: char(1.0) NULL
+
+OrderMonth
+  Type: tinyint NULL
+
+FirstOrderYear
+  Type: int NULL
+
+LastOrderYear
+  Type: int NULL
+
+ProductLine
+  Type: nvarchar(50.0) NULL
+
+AddressLine1
+  Type: nvarchar(60.0) NULL
+
+AddressLine2
+  Type: nvarchar(60.0) NULL
+
+AnnualSales
+  Type: money NULL
+
+BankName
+  Type: nvarchar(50.0) NULL
+
+MinPaymentType
+  Type: tinyint NULL
+
+MinPaymentAmount
+  Type: money NULL
+
+AnnualRevenue
+  Type: money NULL
+
+YearOpened
+  Type: int NULL
+
+======================================================================
+FOREIGN KEY RELATIONSHIPS:
+======================================================================
+
+  GeographyKey → dbo.DimGeography.GeographyKey
+
+======================================================================
+USAGE NOTES:
+======================================================================
+
+
+======================================================================
+END OF dbo.DimReseller DOCUMENTATION
+======================================================================
