@@ -18,17 +18,33 @@ class DatabaseManager:
         self.server = os.getenv('DB_SERVER', 'localhost')
         self.database = os.getenv('DB_NAME', 'AdventureWorksDW2025')
         self.driver = os.getenv('DB_DRIVER', 'ODBC Driver 17 for SQL Server')
+        self.username = os.getenv('DB_USER')
+        self.password = os.getenv('DB_PASSWORD')
         self.connection = None
         
     def connect(self) -> bool:
         """Establish database connection using Windows Authentication"""
         try:
-            connection_string = (
-                f"DRIVER={{{self.driver}}};"
-                f"SERVER={self.server};"
-                f"DATABASE={self.database};"
-                f"Trusted_Connection=yes;"
-            )
+            if self.username and self.password:
+                # Use SQL authentication (required for Azure SQL)
+                connection_string = (
+                    f"DRIVER={{{self.driver}}};"
+                    f"SERVER={self.server};"
+                    f"DATABASE={self.database};"
+                    f"UID={self.username};"
+                    f"PWD={self.password};"
+                    "Encrypt=yes;"
+                    "TrustServerCertificate=no;"
+                    "Connection Timeout=30;"
+                )
+            else:
+                # Fall back to Windows Authentication for local SQL Server
+                connection_string = (
+                    f"DRIVER={{{self.driver}}};"
+                    f"SERVER={self.server};"
+                    f"DATABASE={self.database};"
+                    "Trusted_Connection=yes;"
+                )
             self.connection = pyodbc.connect(connection_string)
             print(f"✓ Connected to {self.database}")
             return True
