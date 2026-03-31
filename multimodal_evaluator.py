@@ -10,6 +10,7 @@ import json
 from pathlib import Path
 
 from multimodal_agent import MultimodalDatabaseAgent
+from agent_orchestrator import AgentOrchestrator
 from test_cases import TEST_CASES
 
 
@@ -377,6 +378,59 @@ class MultimodalEvaluator:
         print(f"{'='*70}\n")
         
         return summary
+
+    def evaluate_agent_execution(self, orchestrator: AgentOrchestrator, query: str) -> Dict:
+        """Evaluate planner-executor flow and execution success for a single query."""
+        result = orchestrator.process_query(query)
+
+        plan_steps = [step["name"] for step in result.get("plan", [])]
+        required_steps = [
+            "Generate SQL",
+            "Validate SQL",
+            "Execute SQL",
+        ]
+
+        missing_steps = [step for step in required_steps if step not in plan_steps]
+        completed_steps = [
+            step for step in result.get("plan", []) if step.get("status") == "completed"
+        ]
+
+        return {
+            "query": query,
+            "success": result.get("success", False),
+            "missing_steps": missing_steps,
+            "completed_steps": len(completed_steps),
+            "total_steps": len(result.get("plan", [])),
+            "errors": result.get("errors", []),
+        }
+
+    def evaluate_agent_suite(self, queries: List[str]) -> Dict:
+        """Run multi-step reasoning tests across several scenarios."""
+        orchestrator = AgentOrchestrator(
+            use_rag=True,
+            enable_visualization=True,
+            enable_vision=False,
+        )
+
+        results = []
+        for query in queries:
+            results.append(self.evaluate_agent_execution(orchestrator, query))
+
+        orchestrator.shutdown()
+
+        success_rate = (
+            sum(1 for r in results if r["success"]) / len(results)
+            if results
+            else 0
+        )
+        missing_step_count = sum(1 for r in results if r["missing_steps"])
+
+        return {
+            "total_queries": len(results),
+            "success_rate": success_rate,
+            "missing_step_cases": missing_step_count,
+            "details": results,
+        }
 
 
 if __name__ == "__main__":

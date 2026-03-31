@@ -1,0 +1,329 @@
+test_id,query,output_a_sql,output_b_sql
+1,Show me all products,"SELECT TOP 100
+    ProductKey,
+    EnglishProductName,
+    Color,
+    ListPrice,
+    ProductLine,
+    Class
+FROM dbo.DimProduct
+WHERE FinishedGoodsFlag = 1
+ORDER BY EnglishProductName","SELECT TOP 100
+    ProductKey,
+    EnglishProductName,
+    Color,
+    ListPrice,
+    ProductLine,
+    Class
+FROM dbo.DimProduct
+WHERE FinishedGoodsFlag = 1
+ORDER BY EnglishProductName"
+2,List all customers with their email addresses,"SELECT TOP 100
+    c.CustomerKey,
+    c.FirstName + ' ' + c.LastName AS CustomerName,
+    g.City,
+    g.StateProvinceName,
+    g.EnglishCountryRegionName
+FROM dbo.DimCustomer c
+INNER JOIN dbo.DimGeography g ON c.GeographyKey = g.GeographyKey
+ORDER BY c.LastName, c.FirstName","SELECT TOP 100
+    c.CustomerKey,
+    c.FirstName + ' ' + c.LastName AS CustomerName,
+    g.City,
+    g.StateProvinceName,
+    g.EnglishCountryRegionName
+FROM dbo.DimCustomer c
+INNER JOIN dbo.DimGeography g ON c.GeographyKey = g.GeographyKey
+ORDER BY c.LastName, c.FirstName"
+3,Show me products that are red in color,"SELECT
+    ProductKey,
+    EnglishProductName,
+    Color,
+    ListPrice,
+    StandardCost
+FROM dbo.DimProduct
+WHERE Color = 'Red'
+    AND FinishedGoodsFlag = 1
+ORDER BY ListPrice DESC","SELECT
+    ProductKey,
+    EnglishProductName,
+    Color,
+    ListPrice,
+    StandardCost
+FROM dbo.DimProduct
+WHERE Color = 'Red'
+    AND FinishedGoodsFlag = 1
+ORDER BY ListPrice DESC"
+4,What is the total sales amount?,"SELECT
+    SUM(SalesAmount) AS TotalRevenue,
+    SUM(OrderQuantity) AS TotalUnitsSold,
+    COUNT(DISTINCT SalesOrderNumber) AS TotalOrders
+FROM dbo.FactInternetSales","SELECT
+    SUM(SalesAmount) AS TotalRevenue,
+    SUM(OrderQuantity) AS TotalUnitsSold,
+    COUNT(DISTINCT SalesOrderNumber) AS TotalOrders
+FROM dbo.FactInternetSales"
+5,How many customers do we have?,"SELECT
+    COUNT(*) AS TotalCustomers,
+    COUNT(DISTINCT GeographyKey) AS UniqueLocations
+FROM dbo.DimCustomer","SELECT
+    COUNT(*) AS TotalCustomers,
+    COUNT(DISTINCT GeographyKey) AS UniqueLocations
+FROM dbo.DimCustomer"
+6,What is the average order quantity for internet sales?,"SELECT
+    AVG(OrderQuantity) AS AvgOrderQuantity,
+    AVG(SalesAmount) AS AvgOrderValue,
+    AVG(SalesAmount / NULLIF(OrderQuantity, 0)) AS AvgPricePerUnit
+FROM dbo.FactInternetSales","SELECT
+    AVG(OrderQuantity) AS AvgOrderQuantity,
+    AVG(SalesAmount) AS AvgOrderValue,
+    AVG(SalesAmount / NULLIF(OrderQuantity, 0)) AS AvgPricePerUnit
+FROM dbo.FactInternetSales"
+7,Show me all sales with product names,"SELECT TOP 100
+    fis.SalesOrderNumber,
+    fis.SalesOrderLineNumber,
+    p.EnglishProductName,
+    fis.OrderQuantity,
+    fis.UnitPrice,
+    fis.SalesAmount
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimProduct p ON fis.ProductKey = p.ProductKey
+ORDER BY fis.SalesOrderNumber, fis.SalesOrderLineNumber","SELECT TOP 100
+    fis.SalesOrderNumber,
+    fis.SalesOrderLineNumber,
+    p.EnglishProductName,
+    fis.OrderQuantity,
+    fis.UnitPrice,
+    fis.SalesAmount
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimProduct p ON fis.ProductKey = p.ProductKey
+ORDER BY fis.SalesOrderNumber, fis.SalesOrderLineNumber"
+8,List all orders with customer names and product names,"SELECT TOP 100
+    fis.SalesOrderNumber,
+    c.FirstName + ' ' + c.LastName AS CustomerName,
+    p.EnglishProductName,
+    fis.OrderQuantity,
+    fis.SalesAmount
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimCustomer c ON fis.CustomerKey = c.CustomerKey
+INNER JOIN dbo.DimProduct p ON fis.ProductKey = p.ProductKey
+ORDER BY fis.SalesOrderNumber","SELECT TOP 100
+    fis.SalesOrderNumber,
+    c.FirstName + ' ' + c.LastName AS CustomerName,
+    p.EnglishProductName,
+    fis.OrderQuantity,
+    fis.SalesAmount
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimCustomer c ON fis.CustomerKey = c.CustomerKey
+INNER JOIN dbo.DimProduct p ON fis.ProductKey = p.ProductKey
+ORDER BY fis.SalesOrderNumber"
+9,Show me sales by product category,"SELECT
+    pc.EnglishProductCategoryName AS Category,
+    SUM(fis.SalesAmount) AS TotalRevenue,
+    SUM(fis.OrderQuantity) AS TotalUnitsSold,
+    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimProduct p ON fis.ProductKey = p.ProductKey
+INNER JOIN dbo.DimProductSubcategory ps ON p.ProductSubcategoryKey = ps.ProductSubcategoryKey
+INNER JOIN dbo.DimProductCategory pc ON ps.ProductCategoryKey = pc.ProductCategoryKey
+GROUP BY pc.EnglishProductCategoryName
+ORDER BY TotalRevenue DESC","SELECT
+    pc.EnglishProductCategoryName AS Category,
+    SUM(fis.SalesAmount) AS TotalRevenue,
+    SUM(fis.OrderQuantity) AS TotalUnitsSold,
+    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimProduct p ON fis.ProductKey = p.ProductKey
+INNER JOIN dbo.DimProductSubcategory ps ON p.ProductSubcategoryKey = ps.ProductSubcategoryKey
+INNER JOIN dbo.DimProductCategory pc ON ps.ProductCategoryKey = pc.ProductCategoryKey
+GROUP BY pc.EnglishProductCategoryName
+ORDER BY TotalRevenue DESC"
+10,Show me sales from the year 2023,"SELECT
+    d.CalendarYear,
+    d.MonthNumberOfYear,
+    d.EnglishMonthName,
+    SUM(fis.SalesAmount) AS MonthlyRevenue,
+    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimDate d ON fis.OrderDateKey = d.DateKey
+WHERE d.CalendarYear = 2023
+GROUP BY d.CalendarYear, d.MonthNumberOfYear, d.EnglishMonthName
+ORDER BY d.MonthNumberOfYear;","SELECT
+    d.CalendarYear,
+    d.MonthNumberOfYear,
+    d.EnglishMonthName,
+    SUM(fis.SalesAmount) AS MonthlyRevenue,
+    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimDate d ON fis.OrderDateKey = d.DateKey
+WHERE d.CalendarYear = 2023
+GROUP BY d.CalendarYear, d.MonthNumberOfYear, d.EnglishMonthName
+ORDER BY d.MonthNumberOfYear;"
+11,What were the total sales in December 2023?,"SELECT
+    d.CalendarYear,
+    d.EnglishMonthName,
+    SUM(fis.SalesAmount) AS TotalRevenue,
+    SUM(fis.OrderQuantity) AS TotalUnits,
+    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount,
+    AVG(fis.SalesAmount) AS AvgOrderValue
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimDate d ON fis.OrderDateKey = d.DateKey
+WHERE d.CalendarYear = 2023
+    AND d.MonthNumberOfYear = 12
+GROUP BY d.CalendarYear, d.EnglishMonthName","SELECT
+    d.CalendarYear,
+    d.EnglishMonthName,
+    SUM(fis.SalesAmount) AS TotalRevenue,
+    SUM(fis.OrderQuantity) AS TotalUnits,
+    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount,
+    AVG(fis.SalesAmount) AS AvgOrderValue
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimDate d ON fis.OrderDateKey = d.DateKey
+WHERE d.CalendarYear = 2023
+    AND d.MonthNumberOfYear = 12
+GROUP BY d.CalendarYear, d.EnglishMonthName"
+12,Show me total sales by country,"SELECT
+    g.EnglishCountryRegionName AS Country,
+    SUM(fis.SalesAmount) AS TotalRevenue,
+    COUNT(DISTINCT fis.CustomerKey) AS UniqueCustomers,
+    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount,
+    AVG(fis.SalesAmount) AS AvgOrderValue
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimCustomer c ON fis.CustomerKey = c.CustomerKey
+INNER JOIN dbo.DimGeography g ON c.GeographyKey = g.GeographyKey
+GROUP BY g.EnglishCountryRegionName
+ORDER BY TotalRevenue DESC;","SELECT
+    g.EnglishCountryRegionName AS Country,
+    SUM(fis.SalesAmount) AS TotalRevenue,
+    COUNT(DISTINCT fis.CustomerKey) AS UniqueCustomers,
+    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount,
+    AVG(fis.SalesAmount) AS AvgOrderValue
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimCustomer c ON fis.CustomerKey = c.CustomerKey
+INNER JOIN dbo.DimGeography g ON c.GeographyKey = g.GeographyKey
+GROUP BY g.EnglishCountryRegionName
+ORDER BY TotalRevenue DESC;"
+13,What is the average unit price by product category?,"SELECT
+    pc.EnglishProductCategoryName AS Category,
+    AVG(p.ListPrice) AS AvgListPrice,
+    AVG(p.StandardCost) AS AvgCost,
+    AVG(p.ListPrice - p.StandardCost) AS AvgMargin,
+    COUNT(*) AS ProductCount
+FROM dbo.DimProduct p
+INNER JOIN dbo.DimProductSubcategory ps ON p.ProductSubcategoryKey = ps.ProductSubcategoryKey
+INNER JOIN dbo.DimProductCategory pc ON ps.ProductCategoryKey = pc.ProductCategoryKey
+WHERE p.FinishedGoodsFlag = 1
+GROUP BY pc.EnglishProductCategoryName
+ORDER BY AvgListPrice DESC;","SELECT
+    pc.EnglishProductCategoryName AS Category,
+    AVG(p.ListPrice) AS AvgListPrice,
+    AVG(p.StandardCost) AS AvgCost,
+    AVG(p.ListPrice - p.StandardCost) AS AvgMargin,
+    COUNT(*) AS ProductCount
+FROM dbo.DimProduct p
+INNER JOIN dbo.DimProductSubcategory ps ON p.ProductSubcategoryKey = ps.ProductSubcategoryKey
+INNER JOIN dbo.DimProductCategory pc ON ps.ProductCategoryKey = pc.ProductCategoryKey
+WHERE p.FinishedGoodsFlag = 1
+GROUP BY pc.EnglishProductCategoryName
+ORDER BY AvgListPrice DESC;"
+14,Show me the top 10 products by sales amount,"SELECT TOP 10
+    p.EnglishProductName,
+    SUM(fis.SalesAmount) AS TotalRevenue,
+    SUM(fis.OrderQuantity) AS TotalUnitsSold,
+    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount,
+    AVG(fis.UnitPrice) AS AvgSellingPrice
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimProduct p ON fis.ProductKey = p.ProductKey
+GROUP BY p.EnglishProductName, p.ProductKey
+ORDER BY TotalRevenue DESC","SELECT TOP 10
+    p.EnglishProductName,
+    SUM(fis.SalesAmount) AS TotalRevenue,
+    SUM(fis.OrderQuantity) AS TotalUnitsSold,
+    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount,
+    AVG(fis.UnitPrice) AS AvgSellingPrice
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimProduct p ON fis.ProductKey = p.ProductKey
+GROUP BY p.EnglishProductName, p.ProductKey
+ORDER BY TotalRevenue DESC"
+15,Who are the top 5 customers by total purchase amount?,"SELECT TOP 5
+    c.CustomerKey,
+    c.CustomerAlternateKey AS CustomerID,
+    SUM(fis.SalesAmount) AS TotalPurchases,
+    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount,
+    AVG(fis.SalesAmount) AS AvgOrderValue
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimCustomer c ON fis.CustomerKey = c.CustomerKey
+GROUP BY c.CustomerKey, c.CustomerAlternateKey
+ORDER BY TotalPurchases DESC","SELECT TOP 5
+    c.CustomerKey,
+    c.CustomerAlternateKey AS CustomerID,
+    SUM(fis.SalesAmount) AS TotalPurchases,
+    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount,
+    AVG(fis.SalesAmount) AS AvgOrderValue
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimCustomer c ON fis.CustomerKey = c.CustomerKey
+GROUP BY c.CustomerKey, c.CustomerAlternateKey
+ORDER BY TotalPurchases DESC"
+16,Compare sales between 2023 and 2024 by quarter,"SELECT
+    d.CalendarYear,
+    d.CalendarQuarter,
+    SUM(fis.SalesAmount) AS QuarterlyRevenue,
+    SUM(fis.OrderQuantity) AS TotalUnits,
+    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimDate d ON fis.OrderDateKey = d.DateKey
+WHERE d.CalendarYear IN (2023, 2024)
+GROUP BY d.CalendarYear, d.CalendarQuarter
+ORDER BY d.CalendarYear, d.CalendarQuarter;","SELECT
+    d.CalendarYear,
+    d.CalendarQuarter,
+    SUM(fis.SalesAmount) AS QuarterlyRevenue,
+    SUM(fis.OrderQuantity) AS TotalUnits,
+    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimDate d ON fis.OrderDateKey = d.DateKey
+WHERE d.CalendarYear IN (2023, 2024)
+GROUP BY d.CalendarYear, d.CalendarQuarter
+ORDER BY d.CalendarYear, d.CalendarQuarter;"
+17,Show me the profit margin by product subcategory,"SELECT
+    ps.EnglishProductSubcategoryName AS Subcategory,
+    SUM(fis.SalesAmount) AS TotalRevenue,
+    SUM(fis.TotalProductCost) AS TotalCost,
+    SUM(fis.SalesAmount - fis.TotalProductCost) AS TotalProfit,
+    CAST(SUM(fis.SalesAmount - fis.TotalProductCost) / NULLIF(SUM(fis.SalesAmount), 0) * 100 AS DECIMAL(10,2)) AS ProfitMarginPct
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimProduct p ON fis.ProductKey = p.ProductKey
+INNER JOIN dbo.DimProductSubcategory ps ON p.ProductSubcategoryKey = ps.ProductSubcategoryKey
+GROUP BY ps.EnglishProductSubcategoryName
+HAVING SUM(fis.SalesAmount) > 0
+ORDER BY ProfitMarginPct DESC","SELECT
+    ps.EnglishProductSubcategoryName AS Subcategory,
+    SUM(fis.SalesAmount) AS TotalRevenue,
+    SUM(fis.TotalProductCost) AS TotalCost,
+    SUM(fis.SalesAmount - fis.TotalProductCost) AS TotalProfit,
+    CAST(SUM(fis.SalesAmount - fis.TotalProductCost) / NULLIF(SUM(fis.SalesAmount), 0) * 100 AS DECIMAL(10,2)) AS ProfitMarginPct
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimProduct p ON fis.ProductKey = p.ProductKey
+INNER JOIN dbo.DimProductSubcategory ps ON p.ProductSubcategoryKey = ps.ProductSubcategoryKey
+GROUP BY ps.EnglishProductSubcategoryName
+HAVING SUM(fis.SalesAmount) > 0
+ORDER BY ProfitMarginPct DESC"
+18,Which sales territory has the highest average order value?,"SELECT
+    st.SalesTerritoryRegion,
+    st.SalesTerritoryCountry,
+    SUM(fis.SalesAmount) AS TotalRevenue,
+    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount,
+    CAST(SUM(fis.SalesAmount) / NULLIF(COUNT(DISTINCT fis.SalesOrderNumber), 0) AS DECIMAL(10,2)) AS AvgOrderValue
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimSalesTerritory st ON fis.SalesTerritoryKey = st.SalesTerritoryKey
+GROUP BY st.SalesTerritoryRegion, st.SalesTerritoryCountry
+ORDER BY AvgOrderValue DESC","SELECT
+    st.SalesTerritoryRegion,
+    st.SalesTerritoryCountry,
+    SUM(fis.SalesAmount) AS TotalRevenue,
+    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount,
+    CAST(SUM(fis.SalesAmount) / NULLIF(COUNT(DISTINCT fis.SalesOrderNumber), 0) AS DECIMAL(10,2)) AS AvgOrderValue
+FROM dbo.FactInternetSales fis
+INNER JOIN dbo.DimSalesTerritory st ON fis.SalesTerritoryKey = st.SalesTerritoryKey
+GROUP BY st.SalesTerritoryRegion, st.SalesTerritoryCountry
+ORDER BY AvgOrderValue DESC"

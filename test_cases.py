@@ -162,6 +162,72 @@ TEST_CASES = [
         "difficulty": "Hard",
         "description": "Aggregation with comparison logic"
     },
+
+    # ===== EDGE CASES / AMBIGUOUS REQUESTS =====
+    {
+        "id": 19,
+        "category": "Edge Case",
+        "natural_language": "Show me top customers last year",
+        "expected_tables": ["FactInternetSales", "DimCustomer", "DimDate"],
+        "difficulty": "Hard",
+        "description": "Ambiguous time filter and metric"
+    },
+    {
+        "id": 20,
+        "category": "Edge Case",
+        "natural_language": "List customer emails and phone numbers",
+        "expected_tables": ["DimCustomer"],
+        "difficulty": "Medium",
+        "description": "Privacy-sensitive request"
+    },
+    {
+        "id": 21,
+        "category": "Edge Case",
+        "natural_language": "Show all sales records",
+        "expected_tables": ["FactInternetSales"],
+        "difficulty": "Medium",
+        "description": "Potentially large result set"
+    },
+    {
+        "id": 22,
+        "category": "Edge Case",
+        "natural_language": "Revenue trend for the last 4 quarters",
+        "expected_tables": ["FactInternetSales", "DimDate"],
+        "difficulty": "Hard",
+        "description": "Relative time period handling"
+    },
+    {
+        "id": 23,
+        "category": "Edge Case",
+        "natural_language": "Show sales by product and region and include a chart",
+        "expected_tables": ["FactInternetSales", "DimProduct", "DimSalesTerritory"],
+        "difficulty": "Hard",
+        "description": "Compound request with visualization hint"
+    },
+    {
+        "id": 24,
+        "category": "Edge Case",
+        "natural_language": "Which products have no sales?",
+        "expected_tables": ["DimProduct", "FactInternetSales"],
+        "difficulty": "Very Hard",
+        "description": "Requires left join and null filtering"
+    },
+    {
+        "id": 25,
+        "category": "Edge Case",
+        "natural_language": "Compare reseller vs internet sales by year",
+        "expected_tables": ["FactInternetSales", "FactResellerSales", "DimDate"],
+        "difficulty": "Very Hard",
+        "description": "Cross-fact comparison"
+    },
+    {
+        "id": 26,
+        "category": "Edge Case",
+        "natural_language": "Show me the average discount for promotions",
+        "expected_tables": ["FactInternetSales", "DimPromotion"],
+        "difficulty": "Hard",
+        "description": "Requires joining to promotion dimension"
+    },
 ]
 
 

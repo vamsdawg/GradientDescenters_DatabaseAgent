@@ -12,6 +12,7 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).parent))
 
 from multimodal_agent import MultimodalDatabaseAgent
+from agent_orchestrator import AgentOrchestrator
 
 # Page configuration
 st.set_page_config(
@@ -57,6 +58,12 @@ if 'agent' not in st.session_state:
     st.session_state.agent = None
 if 'query_history' not in st.session_state:
     st.session_state.query_history = []
+if 'agent_mode' not in st.session_state:
+    st.session_state.agent_mode = 'pipeline'
+if 'planner_mode' not in st.session_state:
+    st.session_state.planner_mode = 'tool_calling'
+if 'planner_visualization' not in st.session_state:
+    st.session_state.planner_visualization = True
 
 # Header
 st.markdown('<h1 class="main-header">🤖 AdventureWorks Multimodal Database Agent</h1>', unsafe_allow_html=True)
@@ -69,6 +76,26 @@ with st.sidebar:
     
     use_rag = st.checkbox("Enable RAG Context", value=True, help="Use RAG retrieval for enhanced SQL generation")
     enable_vision = st.checkbox("Enable Vision Analysis", value=True, help="Analyze charts with GPT-4o vision")
+    use_planner = st.checkbox(
+        "Use Planner-Executor Agent",
+        value=False,
+        help="Enable explicit planning, validation, and tool orchestration",
+    )
+
+    if use_planner:
+        planner_mode = st.selectbox(
+            "Planner Mode",
+            options=["tool_calling", "deterministic"],
+            index=0,
+            help="Tool calling is the default planner behavior",
+        )
+        planner_visualization = st.checkbox(
+            "Enable Planner Visualizations",
+            value=True,
+            help="Controls whether the planner includes visualization steps",
+        )
+        st.session_state.planner_mode = planner_mode
+        st.session_state.planner_visualization = planner_visualization
     
     vision_model = st.selectbox(
         "Vision Model",
@@ -80,13 +107,24 @@ with st.sidebar:
     st.markdown("---")
     
     if st.button("🚀 Initialize Agent"):
-        with st.spinner("Initializing multimodal agent..."):
+        with st.spinner("Initializing agent..."):
             try:
-                st.session_state.agent = MultimodalDatabaseAgent(
-                    use_rag=use_rag,
-                    enable_vision=enable_vision,
-                    vision_model=vision_model
-                )
+                if use_planner:
+                    st.session_state.agent = AgentOrchestrator(
+                        use_rag=use_rag,
+                        enable_visualization=st.session_state.planner_visualization,
+                        enable_vision=enable_vision,
+                        vision_model=vision_model,
+                        planner_mode=st.session_state.planner_mode,
+                    )
+                    st.session_state.agent_mode = 'planner'
+                else:
+                    st.session_state.agent = MultimodalDatabaseAgent(
+                        use_rag=use_rag,
+                        enable_vision=enable_vision,
+                        vision_model=vision_model
+                    )
+                    st.session_state.agent_mode = 'pipeline'
                 st.success("✅ Agent initialized successfully!")
             except Exception as e:
                 st.error(f"❌ Initialization failed: {e}")
@@ -174,18 +212,27 @@ else:
         with col_b:
             enable_vision_analysis = st.checkbox("Enable Vision Analysis", value=True)
             show_sql = st.checkbox("Show Generated SQL", value=True)
+            show_agent_trace = st.checkbox("Show Agent Trace", value=False)
     
     # Process query
     if process_button and query_input:
         with st.spinner("🔄 Processing your query..."):
             try:
-                # Process with multimodal agent
-                result = st.session_state.agent.process_query(
-                    natural_language_query=query_input,
-                    enable_visualization=enable_viz,
-                    enable_vision_analysis=enable_vision_analysis,
-                    chart_type=force_chart_type if force_chart_type != "Auto" else None
-                )
+                if st.session_state.agent_mode == 'planner':
+                    result = st.session_state.agent.process_query(
+                        query_input,
+                        planner_mode=st.session_state.planner_mode,
+                    )
+                else:
+                    # Process with multimodal agent
+                    result = st.session_state.agent.process_query(
+                        natural_language_query=query_input,
+                        enable_visualization=enable_viz,
+                        enable_vision_analysis=enable_vision_analysis,
+                        chart_type=force_chart_type if force_chart_type != "Auto" else None
+                    )
+                if 'total_time' not in result:
+                    result['total_time'] = 0
                 
                 # Store in history
                 st.session_state.query_history.append(result)
@@ -221,6 +268,19 @@ else:
                         st.markdown(f'<div class="insight-box">{result["vision_analysis"]}</div>', unsafe_allow_html=True)
                         
                         st.caption(f"Vision tokens used: {result.get('vision_tokens', {}).get('total', 0)}")
+
+                    # Agent Trace
+                    if show_agent_trace and result.get('plan'):
+                        st.markdown('<p class="sub-header">🧭 Agent Trace</p>', unsafe_allow_html=True)
+                        trace_rows = []
+                        for step in result.get('plan', []):
+                            trace_rows.append({
+                                'step': step.get('step_id'),
+                                'name': step.get('name'),
+                                'status': step.get('status'),
+                                'error': step.get('error')
+                            })
+                        st.dataframe(trace_rows, use_container_width=True)
                     
                     # Metadata
                     with st.expander("📈 Performance Metrics"):

@@ -1,0 +1,902 @@
+{
+  "summary": {
+    "timestamp": "2026-03-31T15:03:05.947907",
+    "deterministic": {
+      "total_cases": 18,
+      "success_rate": 1.0,
+      "plan_complete_rate": 1.0,
+      "avg_latency_seconds": 6.429,
+      "avg_sql_latency_seconds": 2.894,
+      "avg_total_tokens": 1769.1,
+      "avg_table_coverage": 1.0,
+      "privacy_violation_rate": 0.0,
+      "unknown_table_rate": 0.0
+    },
+    "tool_calling": {
+      "total_cases": 18,
+      "success_rate": 1.0,
+      "plan_complete_rate": 1.0,
+      "avg_latency_seconds": 8.729,
+      "avg_sql_latency_seconds": 3.431,
+      "avg_total_tokens": 1769.1,
+      "avg_table_coverage": 1.0,
+      "privacy_violation_rate": 0.0,
+      "unknown_table_rate": 0.0
+    },
+    "delta": {
+      "total_cases": 0,
+      "success_rate": 0.0,
+      "plan_complete_rate": 0.0,
+      "avg_latency_seconds": 2.3,
+      "avg_sql_latency_seconds": 0.537,
+      "avg_total_tokens": 0.0,
+      "avg_table_coverage": 0.0,
+      "privacy_violation_rate": 0.0,
+      "unknown_table_rate": 0.0
+    }
+  },
+  "deterministic_results": [
+    {
+      "test_id": 1,
+      "query": "Show me all products",
+      "expected_tables": [
+        "DimProduct"
+      ],
+      "planner_mode": "deterministic",
+      "sql_query": "SELECT TOP 100\n    ProductKey,\n    EnglishProductName,\n    Color,\n    ListPrice,\n    ProductLine,\n    Class\nFROM dbo.DimProduct\nWHERE FinishedGoodsFlag = 1\nORDER BY EnglishProductName",
+      "metrics": {
+        "success": true,
+        "table_coverage": 1.0,
+        "unknown_tables": [],
+        "privacy_violations": [],
+        "plan_complete": true,
+        "latency_seconds": 4.065,
+        "sql_latency_seconds": 1.771,
+        "total_tokens": 1568,
+        "input_tokens": 1516,
+        "output_tokens": 52,
+        "row_count": 100,
+        "errors": []
+      }
+    },
+    {
+      "test_id": 2,
+      "query": "List all customers with their email addresses",
+      "expected_tables": [
+        "DimCustomer"
+      ],
+      "planner_mode": "deterministic",
+      "sql_query": "SELECT TOP 100\n    c.CustomerKey,\n    c.FirstName + ' ' + c.LastName AS CustomerName,\n    g.City,\n    g.StateProvinceName,\n    g.EnglishCountryRegionName\nFROM dbo.DimCustomer c\nINNER JOIN dbo.DimGeography g ON c.GeographyKey = g.GeographyKey\nORDER BY c.LastName, c.FirstName",
+      "metrics": {
+        "success": true,
+        "table_coverage": 1.0,
+        "unknown_tables": [],
+        "privacy_violations": [],
+        "plan_complete": true,
+        "latency_seconds": 3.755,
+        "sql_latency_seconds": 1.872,
+        "total_tokens": 1699,
+        "input_tokens": 1616,
+        "output_tokens": 83,
+        "row_count": 100,
+        "errors": []
+      }
+    },
+    {
+      "test_id": 3,
+      "query": "Show me products that are red in color",
+      "expected_tables": [
+        "DimProduct"
+      ],
+      "planner_mode": "deterministic",
+      "sql_query": "SELECT\n    ProductKey,\n    EnglishProductName,\n    Color,\n    ListPrice,\n    StandardCost\nFROM dbo.DimProduct\nWHERE Color = 'Red'\n    AND FinishedGoodsFlag = 1\nORDER BY ListPrice DESC",
+      "metrics": {
+        "success": true,
+        "table_coverage": 1.0,
+        "unknown_tables": [],
+        "privacy_violations": [],
+        "plan_complete": true,
+        "latency_seconds": 6.36,
+        "sql_latency_seconds": 3.443,
+        "total_tokens": 1479,
+        "input_tokens": 1426,
+        "output_tokens": 53,
+        "row_count": 63,
+        "errors": []
+      }
+    },
+    {
+      "test_id": 4,
+      "query": "What is the total sales amount?",
+      "expected_tables": [
+        "FactInternetSales"
+      ],
+      "planner_mode": "deterministic",
+      "sql_query": "SELECT\n    SUM(SalesAmount) AS TotalRevenue,\n    SUM(OrderQuantity) AS TotalUnitsSold,\n    COUNT(DISTINCT SalesOrderNumber) AS TotalOrders\nFROM dbo.FactInternetSales",
+      "metrics": {
+        "success": true,
+        "table_coverage": 1.0,
+        "unknown_tables": [],
+        "privacy_violations": [],
+        "plan_complete": true,
+        "latency_seconds": 3.252,
+        "sql_latency_seconds": 1.242,
+        "total_tokens": 1659,
+        "input_tokens": 1613,
+        "output_tokens": 46,
+        "row_count": 1,
+        "errors": []
+      }
+    },
+    {
+      "test_id": 5,
+      "query": "How many customers do we have?",
+      "expected_tables": [
+        "DimCustomer"
+      ],
+      "planner_mode": "deterministic",
+      "sql_query": "SELECT\n    COUNT(*) AS TotalCustomers,\n    COUNT(DISTINCT GeographyKey) AS UniqueLocations\nFROM dbo.DimCustomer",
+      "metrics": {
+        "success": true,
+        "table_coverage": 1.0,
+        "unknown_tables": [],
+        "privacy_violations": [],
+        "plan_complete": true,
+        "latency_seconds": 3.075,
+        "sql_latency_seconds": 0.846,
+        "total_tokens": 1570,
+        "input_tokens": 1539,
+        "output_tokens": 31,
+        "row_count": 1,
+        "errors": []
+      }
+    },
+    {
+      "test_id": 6,
+      "query": "What is the average order quantity for internet sales?",
+      "expected_tables": [
+        "FactInternetSales"
+      ],
+      "planner_mode": "deterministic",
+      "sql_query": "SELECT\n    AVG(OrderQuantity) AS AvgOrderQuantity,\n    AVG(SalesAmount) AS AvgOrderValue,\n    AVG(SalesAmount / NULLIF(OrderQuantity, 0)) AS AvgPricePerUnit\nFROM dbo.FactInternetSales",
+      "metrics": {
+        "success": true,
+        "table_coverage": 1.0,
+        "unknown_tables": [],
+        "privacy_violations": [],
+        "plan_complete": true,
+        "latency_seconds": 5.977,
+        "sql_latency_seconds": 1.429,
+        "total_tokens": 1678,
+        "input_tokens": 1624,
+        "output_tokens": 54,
+        "row_count": 1,
+        "errors": []
+      }
+    },
+    {
+      "test_id": 7,
+      "query": "Show me all sales with product names",
+      "expected_tables": [
+        "FactInternetSales",
+        "DimProduct"
+      ],
+      "planner_mode": "deterministic",
+      "sql_query": "SELECT TOP 100\n    fis.SalesOrderNumber,\n    fis.SalesOrderLineNumber,\n    p.EnglishProductName,\n    fis.OrderQuantity,\n    fis.UnitPrice,\n    fis.SalesAmount\nFROM dbo.FactInternetSales fis\nINNER JOIN dbo.DimProduct p ON fis.ProductKey = p.ProductKey\nORDER BY fis.SalesOrderNumber, fis.SalesOrderLineNumber",
+      "metrics": {
+        "success": true,
+        "table_coverage": 1.0,
+        "unknown_tables": [],
+        "privacy_violations": [],
+        "plan_complete": true,
+        "latency_seconds": 4.196,
+        "sql_latency_seconds": 2.237,
+        "total_tokens": 1728,
+        "input_tokens": 1642,
+        "output_tokens": 86,
+        "row_count": 100,
+        "errors": []
+      }
+    },
+    {
+      "test_id": 8,
+      "query": "List all orders with customer names and product names",
+      "expected_tables": [
+        "FactInternetSales",
+        "DimCustomer",
+        "DimProduct"
+      ],
+      "planner_mode": "deterministic",
+      "sql_query": "SELECT TOP 100\n    fis.SalesOrderNumber,\n    c.FirstName + ' ' + c.LastName AS CustomerName,\n    p.EnglishProductName,\n    fis.OrderQuantity,\n    fis.SalesAmount\nFROM dbo.FactInternetSales fis\nINNER JOIN dbo.DimCustomer c ON fis.CustomerKey = c.CustomerKey\nINNER JOIN dbo.DimProduct p ON fis.ProductKey = p.ProductKey\nORDER BY fis.SalesOrderNumber",
+      "metrics": {
+        "success": true,
+        "table_coverage": 1.0,
+        "unknown_tables": [],
+        "privacy_violations": [],
+        "plan_complete": true,
+        "latency_seconds": 4.098,
+        "sql_latency_seconds": 1.766,
+        "total_tokens": 1732,
+        "input_tokens": 1635,
+        "output_tokens": 97,
+        "row_count": 100,
+        "errors": []
+      }
+    },
+    {
+      "test_id": 9,
+      "query": "Show me sales by product category",
+      "expected_tables": [
+        "FactInternetSales",
+        "DimProduct",
+        "DimProductCategory"
+      ],
+      "planner_mode": "deterministic",
+      "sql_query": "SELECT\n    pc.EnglishProductCategoryName AS Category,\n    SUM(fis.SalesAmount) AS TotalRevenue,\n    SUM(fis.OrderQuantity) AS TotalUnitsSold,\n    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount\nFROM dbo.FactInternetSales fis\nINNER JOIN dbo.DimProduct p ON fis.ProductKey = p.ProductKey\nINNER JOIN dbo.DimProductSubcategory ps ON p.ProductSubcategoryKey = ps.ProductSubcategoryKey\nINNER JOIN dbo.DimProductCategory pc ON ps.ProductCategoryKey = pc.ProductCategoryKey\nGROUP BY pc.EnglishProductCategoryName\nORDER BY TotalRevenue DESC",
+      "metrics": {
+        "success": true,
+        "table_coverage": 1.0,
+        "unknown_tables": [],
+        "privacy_violations": [],
+        "plan_complete": true,
+        "latency_seconds": 7.296,
+        "sql_latency_seconds": 2.739,
+        "total_tokens": 1887,
+        "input_tokens": 1752,
+        "output_tokens": 135,
+        "row_count": 3,
+        "errors": []
+      }
+    },
+    {
+      "test_id": 10,
+      "query": "Show me sales from the year 2023",
+      "expected_tables": [
+        "FactInternetSales",
+        "DimDate"
+      ],
+      "planner_mode": "deterministic",
+      "sql_query": "SELECT\n    d.CalendarYear,\n    d.MonthNumberOfYear,\n    d.EnglishMonthName,\n    SUM(fis.SalesAmount) AS MonthlyRevenue,\n    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount\nFROM dbo.FactInternetSales fis\nINNER JOIN dbo.DimDate d ON fis.OrderDateKey = d.DateKey\nWHERE d.CalendarYear = 2023\nGROUP BY d.CalendarYear, d.MonthNumberOfYear, d.EnglishMonthName\nORDER BY d.MonthNumberOfYear;",
+      "metrics": {
+        "success": true,
+        "table_coverage": 1.0,
+        "unknown_tables": [],
+        "privacy_violations": [],
+        "plan_complete": true,
+        "latency_seconds": 5.318,
+        "sql_latency_seconds": 2.573,
+        "total_tokens": 1843,
+        "input_tokens": 1731,
+        "output_tokens": 112,
+        "row_count": 0,
+        "errors": []
+      }
+    },
+    {
+      "test_id": 11,
+      "query": "What were the total sales in December 2023?",
+      "expected_tables": [
+        "FactInternetSales",
+        "DimDate"
+      ],
+      "planner_mode": "deterministic",
+      "sql_query": "SELECT\n    d.CalendarYear,\n    d.EnglishMonthName,\n    SUM(fis.SalesAmount) AS TotalRevenue,\n    SUM(fis.OrderQuantity) AS TotalUnits,\n    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount,\n    AVG(fis.SalesAmount) AS AvgOrderValue\nFROM dbo.FactInternetSales fis\nINNER JOIN dbo.DimDate d ON fis.OrderDateKey = d.DateKey\nWHERE d.CalendarYear = 2023\n    AND d.MonthNumberOfYear = 12\nGROUP BY d.CalendarYear, d.EnglishMonthName",
+      "metrics": {
+        "success": true,
+        "table_coverage": 1.0,
+        "unknown_tables": [],
+        "privacy_violations": [],
+        "plan_complete": true,
+        "latency_seconds": 4.95,
+        "sql_latency_seconds": 2.971,
+        "total_tokens": 1746,
+        "input_tokens": 1620,
+        "output_tokens": 126,
+        "row_count": 0,
+        "errors": []
+      }
+    },
+    {
+      "test_id": 12,
+      "query": "Show me total sales by country",
+      "expected_tables": [
+        "FactInternetSales",
+        "DimCustomer",
+        "DimGeography"
+      ],
+      "planner_mode": "deterministic",
+      "sql_query": "SELECT\n    g.EnglishCountryRegionName AS Country,\n    SUM(fis.SalesAmount) AS TotalRevenue,\n    COUNT(DISTINCT fis.CustomerKey) AS UniqueCustomers,\n    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount,\n    AVG(fis.SalesAmount) AS AvgOrderValue\nFROM dbo.FactInternetSales fis\nINNER JOIN dbo.DimCustomer c ON fis.CustomerKey = c.CustomerKey\nINNER JOIN dbo.DimGeography g ON c.GeographyKey = g.GeographyKey\nGROUP BY g.EnglishCountryRegionName\nORDER BY TotalRevenue DESC;",
+      "metrics": {
+        "success": true,
+        "table_coverage": 1.0,
+        "unknown_tables": [],
+        "privacy_violations": [],
+        "plan_complete": true,
+        "latency_seconds": 12.849,
+        "sql_latency_seconds": 2.733,
+        "total_tokens": 1877,
+        "input_tokens": 1750,
+        "output_tokens": 127,
+        "row_count": 6,
+        "errors": []
+      }
+    },
+    {
+      "test_id": 13,
+      "query": "What is the average unit price by product category?",
+      "expected_tables": [
+        "DimProduct",
+        "DimProductCategory"
+      ],
+      "planner_mode": "deterministic",
+      "sql_query": "SELECT\n    pc.EnglishProductCategoryName AS Category,\n    AVG(p.ListPrice) AS AvgListPrice,\n    AVG(p.StandardCost) AS AvgCost,\n    AVG(p.ListPrice - p.StandardCost) AS AvgMargin,\n    COUNT(*) AS ProductCount\nFROM dbo.DimProduct p\nINNER JOIN dbo.DimProductSubcategory ps ON p.ProductSubcategoryKey = ps.ProductSubcategoryKey\nINNER JOIN dbo.DimProductCategory pc ON ps.ProductCategoryKey = pc.ProductCategoryKey\nWHERE p.FinishedGoodsFlag = 1\nGROUP BY pc.EnglishProductCategoryName\nORDER BY AvgListPrice DESC;",
+      "metrics": {
+        "success": true,
+        "table_coverage": 1.0,
+        "unknown_tables": [],
+        "privacy_violations": [],
+        "plan_complete": true,
+        "latency_seconds": 6.523,
+        "sql_latency_seconds": 4.177,
+        "total_tokens": 1952,
+        "input_tokens": 1820,
+        "output_tokens": 132,
+        "row_count": 4,
+        "errors": []
+      }
+    },
+    {
+      "test_id": 14,
+      "query": "Show me the top 10 products by sales amount",
+      "expected_tables": [
+        "FactInternetSales",
+        "DimProduct"
+      ],
+      "planner_mode": "deterministic",
+      "sql_query": "SELECT TOP 10\n    p.EnglishProductName,\n    SUM(fis.SalesAmount) AS TotalRevenue,\n    SUM(fis.OrderQuantity) AS TotalUnitsSold,\n    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount,\n    AVG(fis.UnitPrice) AS AvgSellingPrice\nFROM dbo.FactInternetSales fis\nINNER JOIN dbo.DimProduct p ON fis.ProductKey = p.ProductKey\nGROUP BY p.EnglishProductName, p.ProductKey\nORDER BY TotalRevenue DESC",
+      "metrics": {
+        "success": true,
+        "table_coverage": 1.0,
+        "unknown_tables": [],
+        "privacy_violations": [],
+        "plan_complete": true,
+        "latency_seconds": 9.426,
+        "sql_latency_seconds": 3.034,
+        "total_tokens": 1835,
+        "input_tokens": 1726,
+        "output_tokens": 109,
+        "row_count": 10,
+        "errors": []
+      }
+    },
+    {
+      "test_id": 15,
+      "query": "Who are the top 5 customers by total purchase amount?",
+      "expected_tables": [
+        "FactInternetSales",
+        "DimCustomer"
+      ],
+      "planner_mode": "deterministic",
+      "sql_query": "SELECT TOP 5\n    c.CustomerKey,\n    c.CustomerAlternateKey AS CustomerID,\n    SUM(fis.SalesAmount) AS TotalPurchases,\n    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount,\n    AVG(fis.SalesAmount) AS AvgOrderValue\nFROM dbo.FactInternetSales fis\nINNER JOIN dbo.DimCustomer c ON fis.CustomerKey = c.CustomerKey\nGROUP BY c.CustomerKey, c.CustomerAlternateKey\nORDER BY TotalPurchases DESC",
+      "metrics": {
+        "success": true,
+        "table_coverage": 1.0,
+        "unknown_tables": [],
+        "privacy_violations": [],
+        "plan_complete": true,
+        "latency_seconds": 8.385,
+        "sql_latency_seconds": 3.656,
+        "total_tokens": 1895,
+        "input_tokens": 1789,
+        "output_tokens": 106,
+        "row_count": 5,
+        "errors": []
+      }
+    },
+    {
+      "test_id": 16,
+      "query": "Compare sales between 2023 and 2024 by quarter",
+      "expected_tables": [
+        "FactInternetSales",
+        "DimDate"
+      ],
+      "planner_mode": "deterministic",
+      "sql_query": "SELECT\n    d.CalendarYear,\n    d.CalendarQuarter,\n    SUM(fis.SalesAmount) AS QuarterlyRevenue,\n    SUM(fis.OrderQuantity) AS TotalUnits,\n    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount\nFROM dbo.FactInternetSales fis\nINNER JOIN dbo.DimDate d ON fis.OrderDateKey = d.DateKey\nWHERE d.CalendarYear IN (2023, 2024)\nGROUP BY d.CalendarYear, d.CalendarQuarter\nORDER BY d.CalendarYear, d.CalendarQuarter;",
+      "metrics": {
+        "success": true,
+        "table_coverage": 1.0,
+        "unknown_tables": [],
+        "privacy_violations": [],
+        "plan_complete": true,
+        "latency_seconds": 6.689,
+        "sql_latency_seconds": 2.729,
+        "total_tokens": 1830,
+        "input_tokens": 1718,
+        "output_tokens": 112,
+        "row_count": 0,
+        "errors": []
+      }
+    },
+    {
+      "test_id": 17,
+      "query": "Show me the profit margin by product subcategory",
+      "expected_tables": [
+        "FactInternetSales",
+        "DimProduct",
+        "DimProductSubcategory"
+      ],
+      "planner_mode": "deterministic",
+      "sql_query": "SELECT\n    ps.EnglishProductSubcategoryName AS Subcategory,\n    SUM(fis.SalesAmount) AS TotalRevenue,\n    SUM(fis.TotalProductCost) AS TotalCost,\n    SUM(fis.SalesAmount - fis.TotalProductCost) AS TotalProfit,\n    CAST(SUM(fis.SalesAmount - fis.TotalProductCost) / NULLIF(SUM(fis.SalesAmount), 0) * 100 AS DECIMAL(10,2)) AS ProfitMarginPct\nFROM dbo.FactInternetSales fis\nINNER JOIN dbo.DimProduct p ON fis.ProductKey = p.ProductKey\nINNER JOIN dbo.DimProductSubcategory ps ON p.ProductSubcategoryKey = ps.ProductSubcategoryKey\nGROUP BY ps.EnglishProductSubcategoryName\nHAVING SUM(fis.SalesAmount) > 0\nORDER BY ProfitMarginPct DESC",
+      "metrics": {
+        "success": true,
+        "table_coverage": 1.0,
+        "unknown_tables": [],
+        "privacy_violations": [],
+        "plan_complete": true,
+        "latency_seconds": 6.942,
+        "sql_latency_seconds": 4.367,
+        "total_tokens": 2000,
+        "input_tokens": 1820,
+        "output_tokens": 180,
+        "row_count": 17,
+        "errors": []
+      }
+    },
+    {
+      "test_id": 18,
+      "query": "Which sales territory has the highest average order value?",
+      "expected_tables": [
+        "FactInternetSales",
+        "DimSalesTerritory"
+      ],
+      "planner_mode": "deterministic",
+      "sql_query": "SELECT\n    st.SalesTerritoryRegion,\n    st.SalesTerritoryCountry,\n    SUM(fis.SalesAmount) AS TotalRevenue,\n    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount,\n    CAST(SUM(fis.SalesAmount) / NULLIF(COUNT(DISTINCT fis.SalesOrderNumber), 0) AS DECIMAL(10,2)) AS AvgOrderValue\nFROM dbo.FactInternetSales fis\nINNER JOIN dbo.DimSalesTerritory st ON fis.SalesTerritoryKey = st.SalesTerritoryKey\nGROUP BY st.SalesTerritoryRegion, st.SalesTerritoryCountry\nORDER BY AvgOrderValue DESC",
+      "metrics": {
+        "success": true,
+        "table_coverage": 1.0,
+        "unknown_tables": [],
+        "privacy_violations": [],
+        "plan_complete": true,
+        "latency_seconds": 12.566,
+        "sql_latency_seconds": 8.499,
+        "total_tokens": 1866,
+        "input_tokens": 1722,
+        "output_tokens": 144,
+        "row_count": 10,
+        "errors": []
+      }
+    }
+  ],
+  "tool_calling_results": [
+    {
+      "test_id": 1,
+      "query": "Show me all products",
+      "expected_tables": [
+        "DimProduct"
+      ],
+      "planner_mode": "tool_calling",
+      "sql_query": "SELECT TOP 100\n    ProductKey,\n    EnglishProductName,\n    Color,\n    ListPrice,\n    ProductLine,\n    Class\nFROM dbo.DimProduct\nWHERE FinishedGoodsFlag = 1\nORDER BY EnglishProductName",
+      "metrics": {
+        "success": true,
+        "table_coverage": 1.0,
+        "unknown_tables": [],
+        "privacy_violations": [],
+        "plan_complete": true,
+        "latency_seconds": 5.004,
+        "sql_latency_seconds": 1.517,
+        "total_tokens": 1568,
+        "input_tokens": 1516,
+        "output_tokens": 52,
+        "row_count": 100,
+        "errors": []
+      }
+    },
+    {
+      "test_id": 2,
+      "query": "List all customers with their email addresses",
+      "expected_tables": [
+        "DimCustomer"
+      ],
+      "planner_mode": "tool_calling",
+      "sql_query": "SELECT TOP 100\n    c.CustomerKey,\n    c.FirstName + ' ' + c.LastName AS CustomerName,\n    g.City,\n    g.StateProvinceName,\n    g.EnglishCountryRegionName\nFROM dbo.DimCustomer c\nINNER JOIN dbo.DimGeography g ON c.GeographyKey = g.GeographyKey\nORDER BY c.LastName, c.FirstName",
+      "metrics": {
+        "success": true,
+        "table_coverage": 1.0,
+        "unknown_tables": [],
+        "privacy_violations": [],
+        "plan_complete": true,
+        "latency_seconds": 14.07,
+        "sql_latency_seconds": 3.552,
+        "total_tokens": 1699,
+        "input_tokens": 1616,
+        "output_tokens": 83,
+        "row_count": 100,
+        "errors": []
+      }
+    },
+    {
+      "test_id": 3,
+      "query": "Show me products that are red in color",
+      "expected_tables": [
+        "DimProduct"
+      ],
+      "planner_mode": "tool_calling",
+      "sql_query": "SELECT\n    ProductKey,\n    EnglishProductName,\n    Color,\n    ListPrice,\n    StandardCost\nFROM dbo.DimProduct\nWHERE Color = 'Red'\n    AND FinishedGoodsFlag = 1\nORDER BY ListPrice DESC",
+      "metrics": {
+        "success": true,
+        "table_coverage": 1.0,
+        "unknown_tables": [],
+        "privacy_violations": [],
+        "plan_complete": true,
+        "latency_seconds": 4.916,
+        "sql_latency_seconds": 1.411,
+        "total_tokens": 1479,
+        "input_tokens": 1426,
+        "output_tokens": 53,
+        "row_count": 63,
+        "errors": []
+      }
+    },
+    {
+      "test_id": 4,
+      "query": "What is the total sales amount?",
+      "expected_tables": [
+        "FactInternetSales"
+      ],
+      "planner_mode": "tool_calling",
+      "sql_query": "SELECT\n    SUM(SalesAmount) AS TotalRevenue,\n    SUM(OrderQuantity) AS TotalUnitsSold,\n    COUNT(DISTINCT SalesOrderNumber) AS TotalOrders\nFROM dbo.FactInternetSales",
+      "metrics": {
+        "success": true,
+        "table_coverage": 1.0,
+        "unknown_tables": [],
+        "privacy_violations": [],
+        "plan_complete": true,
+        "latency_seconds": 4.875,
+        "sql_latency_seconds": 1.46,
+        "total_tokens": 1659,
+        "input_tokens": 1613,
+        "output_tokens": 46,
+        "row_count": 1,
+        "errors": []
+      }
+    },
+    {
+      "test_id": 5,
+      "query": "How many customers do we have?",
+      "expected_tables": [
+        "DimCustomer"
+      ],
+      "planner_mode": "tool_calling",
+      "sql_query": "SELECT\n    COUNT(*) AS TotalCustomers,\n    COUNT(DISTINCT GeographyKey) AS UniqueLocations\nFROM dbo.DimCustomer",
+      "metrics": {
+        "success": true,
+        "table_coverage": 1.0,
+        "unknown_tables": [],
+        "privacy_violations": [],
+        "plan_complete": true,
+        "latency_seconds": 8.068,
+        "sql_latency_seconds": 3.718,
+        "total_tokens": 1570,
+        "input_tokens": 1539,
+        "output_tokens": 31,
+        "row_count": 1,
+        "errors": []
+      }
+    },
+    {
+      "test_id": 6,
+      "query": "What is the average order quantity for internet sales?",
+      "expected_tables": [
+        "FactInternetSales"
+      ],
+      "planner_mode": "tool_calling",
+      "sql_query": "SELECT\n    AVG(OrderQuantity) AS AvgOrderQuantity,\n    AVG(SalesAmount) AS AvgOrderValue,\n    AVG(SalesAmount / NULLIF(OrderQuantity, 0)) AS AvgPricePerUnit\nFROM dbo.FactInternetSales",
+      "metrics": {
+        "success": true,
+        "table_coverage": 1.0,
+        "unknown_tables": [],
+        "privacy_violations": [],
+        "plan_complete": true,
+        "latency_seconds": 8.537,
+        "sql_latency_seconds": 1.713,
+        "total_tokens": 1678,
+        "input_tokens": 1624,
+        "output_tokens": 54,
+        "row_count": 1,
+        "errors": []
+      }
+    },
+    {
+      "test_id": 7,
+      "query": "Show me all sales with product names",
+      "expected_tables": [
+        "FactInternetSales",
+        "DimProduct"
+      ],
+      "planner_mode": "tool_calling",
+      "sql_query": "SELECT TOP 100\n    fis.SalesOrderNumber,\n    fis.SalesOrderLineNumber,\n    p.EnglishProductName,\n    fis.OrderQuantity,\n    fis.UnitPrice,\n    fis.SalesAmount\nFROM dbo.FactInternetSales fis\nINNER JOIN dbo.DimProduct p ON fis.ProductKey = p.ProductKey\nORDER BY fis.SalesOrderNumber, fis.SalesOrderLineNumber",
+      "metrics": {
+        "success": true,
+        "table_coverage": 1.0,
+        "unknown_tables": [],
+        "privacy_violations": [],
+        "plan_complete": true,
+        "latency_seconds": 5.714,
+        "sql_latency_seconds": 2.196,
+        "total_tokens": 1728,
+        "input_tokens": 1642,
+        "output_tokens": 86,
+        "row_count": 100,
+        "errors": []
+      }
+    },
+    {
+      "test_id": 8,
+      "query": "List all orders with customer names and product names",
+      "expected_tables": [
+        "FactInternetSales",
+        "DimCustomer",
+        "DimProduct"
+      ],
+      "planner_mode": "tool_calling",
+      "sql_query": "SELECT TOP 100\n    fis.SalesOrderNumber,\n    c.FirstName + ' ' + c.LastName AS CustomerName,\n    p.EnglishProductName,\n    fis.OrderQuantity,\n    fis.SalesAmount\nFROM dbo.FactInternetSales fis\nINNER JOIN dbo.DimCustomer c ON fis.CustomerKey = c.CustomerKey\nINNER JOIN dbo.DimProduct p ON fis.ProductKey = p.ProductKey\nORDER BY fis.SalesOrderNumber",
+      "metrics": {
+        "success": true,
+        "table_coverage": 1.0,
+        "unknown_tables": [],
+        "privacy_violations": [],
+        "plan_complete": true,
+        "latency_seconds": 5.736,
+        "sql_latency_seconds": 2.133,
+        "total_tokens": 1732,
+        "input_tokens": 1635,
+        "output_tokens": 97,
+        "row_count": 100,
+        "errors": []
+      }
+    },
+    {
+      "test_id": 9,
+      "query": "Show me sales by product category",
+      "expected_tables": [
+        "FactInternetSales",
+        "DimProduct",
+        "DimProductCategory"
+      ],
+      "planner_mode": "tool_calling",
+      "sql_query": "SELECT\n    pc.EnglishProductCategoryName AS Category,\n    SUM(fis.SalesAmount) AS TotalRevenue,\n    SUM(fis.OrderQuantity) AS TotalUnitsSold,\n    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount\nFROM dbo.FactInternetSales fis\nINNER JOIN dbo.DimProduct p ON fis.ProductKey = p.ProductKey\nINNER JOIN dbo.DimProductSubcategory ps ON p.ProductSubcategoryKey = ps.ProductSubcategoryKey\nINNER JOIN dbo.DimProductCategory pc ON ps.ProductCategoryKey = pc.ProductCategoryKey\nGROUP BY pc.EnglishProductCategoryName\nORDER BY TotalRevenue DESC",
+      "metrics": {
+        "success": true,
+        "table_coverage": 1.0,
+        "unknown_tables": [],
+        "privacy_violations": [],
+        "plan_complete": true,
+        "latency_seconds": 14.386,
+        "sql_latency_seconds": 5.229,
+        "total_tokens": 1887,
+        "input_tokens": 1752,
+        "output_tokens": 135,
+        "row_count": 3,
+        "errors": []
+      }
+    },
+    {
+      "test_id": 10,
+      "query": "Show me sales from the year 2023",
+      "expected_tables": [
+        "FactInternetSales",
+        "DimDate"
+      ],
+      "planner_mode": "tool_calling",
+      "sql_query": "SELECT\n    d.CalendarYear,\n    d.MonthNumberOfYear,\n    d.EnglishMonthName,\n    SUM(fis.SalesAmount) AS MonthlyRevenue,\n    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount\nFROM dbo.FactInternetSales fis\nINNER JOIN dbo.DimDate d ON fis.OrderDateKey = d.DateKey\nWHERE d.CalendarYear = 2023\nGROUP BY d.CalendarYear, d.MonthNumberOfYear, d.EnglishMonthName\nORDER BY d.MonthNumberOfYear;",
+      "metrics": {
+        "success": true,
+        "table_coverage": 1.0,
+        "unknown_tables": [],
+        "privacy_violations": [],
+        "plan_complete": true,
+        "latency_seconds": 7.828,
+        "sql_latency_seconds": 2.832,
+        "total_tokens": 1843,
+        "input_tokens": 1731,
+        "output_tokens": 112,
+        "row_count": 0,
+        "errors": []
+      }
+    },
+    {
+      "test_id": 11,
+      "query": "What were the total sales in December 2023?",
+      "expected_tables": [
+        "FactInternetSales",
+        "DimDate"
+      ],
+      "planner_mode": "tool_calling",
+      "sql_query": "SELECT\n    d.CalendarYear,\n    d.EnglishMonthName,\n    SUM(fis.SalesAmount) AS TotalRevenue,\n    SUM(fis.OrderQuantity) AS TotalUnits,\n    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount,\n    AVG(fis.SalesAmount) AS AvgOrderValue\nFROM dbo.FactInternetSales fis\nINNER JOIN dbo.DimDate d ON fis.OrderDateKey = d.DateKey\nWHERE d.CalendarYear = 2023\n    AND d.MonthNumberOfYear = 12\nGROUP BY d.CalendarYear, d.EnglishMonthName",
+      "metrics": {
+        "success": true,
+        "table_coverage": 1.0,
+        "unknown_tables": [],
+        "privacy_violations": [],
+        "plan_complete": true,
+        "latency_seconds": 8.865,
+        "sql_latency_seconds": 5.498,
+        "total_tokens": 1746,
+        "input_tokens": 1620,
+        "output_tokens": 126,
+        "row_count": 0,
+        "errors": []
+      }
+    },
+    {
+      "test_id": 12,
+      "query": "Show me total sales by country",
+      "expected_tables": [
+        "FactInternetSales",
+        "DimCustomer",
+        "DimGeography"
+      ],
+      "planner_mode": "tool_calling",
+      "sql_query": "SELECT\n    g.EnglishCountryRegionName AS Country,\n    SUM(fis.SalesAmount) AS TotalRevenue,\n    COUNT(DISTINCT fis.CustomerKey) AS UniqueCustomers,\n    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount,\n    AVG(fis.SalesAmount) AS AvgOrderValue\nFROM dbo.FactInternetSales fis\nINNER JOIN dbo.DimCustomer c ON fis.CustomerKey = c.CustomerKey\nINNER JOIN dbo.DimGeography g ON c.GeographyKey = g.GeographyKey\nGROUP BY g.EnglishCountryRegionName\nORDER BY TotalRevenue DESC;",
+      "metrics": {
+        "success": true,
+        "table_coverage": 1.0,
+        "unknown_tables": [],
+        "privacy_violations": [],
+        "plan_complete": true,
+        "latency_seconds": 14.117,
+        "sql_latency_seconds": 3.057,
+        "total_tokens": 1877,
+        "input_tokens": 1750,
+        "output_tokens": 127,
+        "row_count": 6,
+        "errors": []
+      }
+    },
+    {
+      "test_id": 13,
+      "query": "What is the average unit price by product category?",
+      "expected_tables": [
+        "DimProduct",
+        "DimProductCategory"
+      ],
+      "planner_mode": "tool_calling",
+      "sql_query": "SELECT\n    pc.EnglishProductCategoryName AS Category,\n    AVG(p.ListPrice) AS AvgListPrice,\n    AVG(p.StandardCost) AS AvgCost,\n    AVG(p.ListPrice - p.StandardCost) AS AvgMargin,\n    COUNT(*) AS ProductCount\nFROM dbo.DimProduct p\nINNER JOIN dbo.DimProductSubcategory ps ON p.ProductSubcategoryKey = ps.ProductSubcategoryKey\nINNER JOIN dbo.DimProductCategory pc ON ps.ProductCategoryKey = pc.ProductCategoryKey\nWHERE p.FinishedGoodsFlag = 1\nGROUP BY pc.EnglishProductCategoryName\nORDER BY AvgListPrice DESC;",
+      "metrics": {
+        "success": true,
+        "table_coverage": 1.0,
+        "unknown_tables": [],
+        "privacy_violations": [],
+        "plan_complete": true,
+        "latency_seconds": 5.916,
+        "sql_latency_seconds": 2.659,
+        "total_tokens": 1952,
+        "input_tokens": 1820,
+        "output_tokens": 132,
+        "row_count": 4,
+        "errors": []
+      }
+    },
+    {
+      "test_id": 14,
+      "query": "Show me the top 10 products by sales amount",
+      "expected_tables": [
+        "FactInternetSales",
+        "DimProduct"
+      ],
+      "planner_mode": "tool_calling",
+      "sql_query": "SELECT TOP 10\n    p.EnglishProductName,\n    SUM(fis.SalesAmount) AS TotalRevenue,\n    SUM(fis.OrderQuantity) AS TotalUnitsSold,\n    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount,\n    AVG(fis.UnitPrice) AS AvgSellingPrice\nFROM dbo.FactInternetSales fis\nINNER JOIN dbo.DimProduct p ON fis.ProductKey = p.ProductKey\nGROUP BY p.EnglishProductName, p.ProductKey\nORDER BY TotalRevenue DESC",
+      "metrics": {
+        "success": true,
+        "table_coverage": 1.0,
+        "unknown_tables": [],
+        "privacy_violations": [],
+        "plan_complete": true,
+        "latency_seconds": 11.003,
+        "sql_latency_seconds": 2.632,
+        "total_tokens": 1835,
+        "input_tokens": 1726,
+        "output_tokens": 109,
+        "row_count": 10,
+        "errors": []
+      }
+    },
+    {
+      "test_id": 15,
+      "query": "Who are the top 5 customers by total purchase amount?",
+      "expected_tables": [
+        "FactInternetSales",
+        "DimCustomer"
+      ],
+      "planner_mode": "tool_calling",
+      "sql_query": "SELECT TOP 5\n    c.CustomerKey,\n    c.CustomerAlternateKey AS CustomerID,\n    SUM(fis.SalesAmount) AS TotalPurchases,\n    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount,\n    AVG(fis.SalesAmount) AS AvgOrderValue\nFROM dbo.FactInternetSales fis\nINNER JOIN dbo.DimCustomer c ON fis.CustomerKey = c.CustomerKey\nGROUP BY c.CustomerKey, c.CustomerAlternateKey\nORDER BY TotalPurchases DESC",
+      "metrics": {
+        "success": true,
+        "table_coverage": 1.0,
+        "unknown_tables": [],
+        "privacy_violations": [],
+        "plan_complete": true,
+        "latency_seconds": 6.826,
+        "sql_latency_seconds": 2.38,
+        "total_tokens": 1895,
+        "input_tokens": 1789,
+        "output_tokens": 106,
+        "row_count": 5,
+        "errors": []
+      }
+    },
+    {
+      "test_id": 16,
+      "query": "Compare sales between 2023 and 2024 by quarter",
+      "expected_tables": [
+        "FactInternetSales",
+        "DimDate"
+      ],
+      "planner_mode": "tool_calling",
+      "sql_query": "SELECT\n    d.CalendarYear,\n    d.CalendarQuarter,\n    SUM(fis.SalesAmount) AS QuarterlyRevenue,\n    SUM(fis.OrderQuantity) AS TotalUnits,\n    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount\nFROM dbo.FactInternetSales fis\nINNER JOIN dbo.DimDate d ON fis.OrderDateKey = d.DateKey\nWHERE d.CalendarYear IN (2023, 2024)\nGROUP BY d.CalendarYear, d.CalendarQuarter\nORDER BY d.CalendarYear, d.CalendarQuarter;",
+      "metrics": {
+        "success": true,
+        "table_coverage": 1.0,
+        "unknown_tables": [],
+        "privacy_violations": [],
+        "plan_complete": true,
+        "latency_seconds": 6.661,
+        "sql_latency_seconds": 3.016,
+        "total_tokens": 1830,
+        "input_tokens": 1718,
+        "output_tokens": 112,
+        "row_count": 0,
+        "errors": []
+      }
+    },
+    {
+      "test_id": 17,
+      "query": "Show me the profit margin by product subcategory",
+      "expected_tables": [
+        "FactInternetSales",
+        "DimProduct",
+        "DimProductSubcategory"
+      ],
+      "planner_mode": "tool_calling",
+      "sql_query": "SELECT\n    ps.EnglishProductSubcategoryName AS Subcategory,\n    SUM(fis.SalesAmount) AS TotalRevenue,\n    SUM(fis.TotalProductCost) AS TotalCost,\n    SUM(fis.SalesAmount - fis.TotalProductCost) AS TotalProfit,\n    CAST(SUM(fis.SalesAmount - fis.TotalProductCost) / NULLIF(SUM(fis.SalesAmount), 0) * 100 AS DECIMAL(10,2)) AS ProfitMarginPct\nFROM dbo.FactInternetSales fis\nINNER JOIN dbo.DimProduct p ON fis.ProductKey = p.ProductKey\nINNER JOIN dbo.DimProductSubcategory ps ON p.ProductSubcategoryKey = ps.ProductSubcategoryKey\nGROUP BY ps.EnglishProductSubcategoryName\nHAVING SUM(fis.SalesAmount) > 0\nORDER BY ProfitMarginPct DESC",
+      "metrics": {
+        "success": true,
+        "table_coverage": 1.0,
+        "unknown_tables": [],
+        "privacy_violations": [],
+        "plan_complete": true,
+        "latency_seconds": 8.397,
+        "sql_latency_seconds": 5.081,
+        "total_tokens": 2000,
+        "input_tokens": 1820,
+        "output_tokens": 180,
+        "row_count": 17,
+        "errors": []
+      }
+    },
+    {
+      "test_id": 18,
+      "query": "Which sales territory has the highest average order value?",
+      "expected_tables": [
+        "FactInternetSales",
+        "DimSalesTerritory"
+      ],
+      "planner_mode": "tool_calling",
+      "sql_query": "SELECT\n    st.SalesTerritoryRegion,\n    st.SalesTerritoryCountry,\n    SUM(fis.SalesAmount) AS TotalRevenue,\n    COUNT(DISTINCT fis.SalesOrderNumber) AS OrderCount,\n    CAST(SUM(fis.SalesAmount) / NULLIF(COUNT(DISTINCT fis.SalesOrderNumber), 0) AS DECIMAL(10,2)) AS AvgOrderValue\nFROM dbo.FactInternetSales fis\nINNER JOIN dbo.DimSalesTerritory st ON fis.SalesTerritoryKey = st.SalesTerritoryKey\nGROUP BY st.SalesTerritoryRegion, st.SalesTerritoryCountry\nORDER BY AvgOrderValue DESC",
+      "metrics": {
+        "success": true,
+        "table_coverage": 1.0,
+        "unknown_tables": [],
+        "privacy_violations": [],
+        "plan_complete": true,
+        "latency_seconds": 16.208,
+        "sql_latency_seconds": 11.681,
+        "total_tokens": 1866,
+        "input_tokens": 1722,
+        "output_tokens": 144,
+        "row_count": 10,
+        "errors": []
+      }
+    }
+  ]
+}

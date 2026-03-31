@@ -79,6 +79,7 @@ final_project/
 ├── test_cases.py                    # Test query definitions
 ├── llm_evaluator.py                 # LLM evaluation framework
 ├── run_experiments.py               # Full evaluation runner
+├── agent_orchestrator.py            # Planner-executor agent architecture
 │
 └── results/                         # Output directory (auto-created)
     ├── experiment_results.json      # Detailed results
@@ -105,6 +106,11 @@ final_project/
 - Representative queries, edge cases, and complex analytical queries
 - Privacy-sensitive test scenarios
 - Performance metrics: accuracy, latency, cost
+
+**Agent-Based Orchestration**
+- Planner-executor architecture with explicit tool orchestration
+- Step-by-step plans, validation, and optional retries
+- Lightweight memory persistence for multi-step interactions
 
 ## Results
 

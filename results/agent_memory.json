@@ -1,0 +1,1567 @@
+[
+  {
+    "timestamp": "2026-03-24T16:16:07.348094",
+    "query": "Compare sales across different regions",
+    "success": true,
+    "errors": [],
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL",
+      "Generate visualization",
+      "Analyze visualization"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T13:02:25.032774",
+    "query": "3.\tShow me a breakdown of sales across subcategories within the Bikes category, specific to Australia in the year 2013",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL",
+      "Generate visualization",
+      "Analyze visualization"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T13:02:17.819167",
+    "query": "3.\tShow me a breakdown of sales across subcategories within the Bikes category, specific to Australia in the year 2013",
+    "success": false,
+    "errors": [
+      "('HY000', '[HY000] [Microsoft][ODBC Driver 17 for SQL Server]Connection is busy with results for another command (0) (SQLExecDirectW)')"
+    ],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL",
+      "Generate visualization",
+      "Analyze visualization"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T13:03:19.490090",
+    "query": "What were the highest selling products in December?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL",
+      "Generate visualization",
+      "Analyze visualization"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T13:03:36.263473",
+    "query": "What were the highest selling products in December?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL",
+      "Generate visualization",
+      "Analyze visualization"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T13:03:57.305530",
+    "query": "Top 10 products by revenue, in Australia",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL",
+      "Generate visualization",
+      "Analyze visualization"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T13:04:57.582313",
+    "query": "Top 10 products by revenue, in Australia",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL",
+      "Generate visualization",
+      "Analyze visualization"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:47:13.163781",
+    "query": "Top 10 products by revenue, in Australia",
+    "success": false,
+    "errors": [
+      "('08S01', '[08S01] [Microsoft][ODBC Driver 17 for SQL Server]TCP Provider: An existing connection was forcibly closed by the remote host.\\r\\n (10054) (SQLExecDirectW); [08S01] [Microsoft][ODBC Driver 17 for SQL Server]Communication link failure (10054)')"
+    ],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL",
+      "Generate visualization",
+      "Analyze visualization"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:47:36.803723",
+    "query": "Top 10 products by revenue, in Australia",
+    "success": false,
+    "errors": [
+      "('08S01', '[08S01] [Microsoft][ODBC Driver 17 for SQL Server]Communication link failure (0) (SQLExecDirectW)')"
+    ],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL",
+      "Generate visualization",
+      "Analyze visualization"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:50:03.556554",
+    "query": "Top 10 products by revenue, in Australia",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL",
+      "Generate visualization",
+      "Analyze visualization"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:50:43.825163",
+    "query": "Top 10 products by revenue, in Australia",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL",
+      "Generate visualization",
+      "Analyze visualization"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:51:12.226037",
+    "query": "Compare sales across different regions",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL",
+      "Generate visualization",
+      "Analyze visualization"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:51:56.942768",
+    "query": "Compare sales across different regions",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL",
+      "Generate visualization",
+      "Analyze visualization"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:54:29.479724",
+    "query": "Show me all products",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:54:34.999958",
+    "query": "List all customers with their email addresses",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:54:39.295903",
+    "query": "Show me products that are red in color",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:54:44.973164",
+    "query": "What is the total sales amount?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:54:48.433321",
+    "query": "How many customers do we have?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:54:51.741525",
+    "query": "What is the average order quantity for internet sales?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:54:55.392123",
+    "query": "Show me all sales with product names",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:54:59.656177",
+    "query": "List all orders with customer names and product names",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:55:03.778321",
+    "query": "Show me sales by product category",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:55:10.560770",
+    "query": "Show me sales from the year 2023",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:55:15.885754",
+    "query": "What were the total sales in December 2023?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:55:22.692115",
+    "query": "Show me total sales by country",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:56:07.658250",
+    "query": "What is the average unit price by product category?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:56:13.802613",
+    "query": "Show me the top 10 products by sales amount",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:56:19.865669",
+    "query": "Who are the top 5 customers by total purchase amount?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:56:25.335970",
+    "query": "Compare sales between 2023 and 2024 by quarter",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:56:30.478846",
+    "query": "Show me the profit margin by product subcategory",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:58:30.000215",
+    "query": "Show me all products",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:58:34.068208",
+    "query": "List all customers with their email addresses",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:58:37.825132",
+    "query": "Show me products that are red in color",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:58:44.186859",
+    "query": "What is the total sales amount?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:58:47.440326",
+    "query": "How many customers do we have?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:58:50.517112",
+    "query": "What is the average order quantity for internet sales?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:58:56.495501",
+    "query": "Show me all sales with product names",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:59:00.692644",
+    "query": "List all orders with customer names and product names",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:59:04.792389",
+    "query": "Show me sales by product category",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:59:12.089256",
+    "query": "Show me sales from the year 2023",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:59:17.408561",
+    "query": "What were the total sales in December 2023?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:59:22.360092",
+    "query": "Show me total sales by country",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:59:35.210787",
+    "query": "What is the average unit price by product category?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:59:41.734831",
+    "query": "Show me the top 10 products by sales amount",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:59:51.161798",
+    "query": "Who are the top 5 customers by total purchase amount?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T14:59:59.547864",
+    "query": "Compare sales between 2023 and 2024 by quarter",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:00:06.237735",
+    "query": "Show me the profit margin by product subcategory",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:00:13.181428",
+    "query": "Which sales territory has the highest average order value?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:00:29.426226",
+    "query": "Show me all products",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:00:34.253168",
+    "query": "List all customers with their email addresses",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:00:48.656815",
+    "query": "Show me products that are red in color",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:00:53.161757",
+    "query": "What is the total sales amount?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:00:58.236350",
+    "query": "How many customers do we have?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:01:06.366432",
+    "query": "What is the average order quantity for internet sales?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:01:15.036148",
+    "query": "Show me all sales with product names",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:01:20.423662",
+    "query": "List all orders with customer names and product names",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:01:26.121877",
+    "query": "Show me sales by product category",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:01:41.058797",
+    "query": "Show me sales from the year 2023",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:01:48.479344",
+    "query": "What were the total sales in December 2023?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:01:57.513543",
+    "query": "Show me total sales by country",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:02:11.473418",
+    "query": "What is the average unit price by product category?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:02:17.504474",
+    "query": "Show me the top 10 products by sales amount",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:02:28.814247",
+    "query": "Who are the top 5 customers by total purchase amount?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:02:35.301376",
+    "query": "Compare sales between 2023 and 2024 by quarter",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:02:41.924204",
+    "query": "Show me the profit margin by product subcategory",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:02:50.658979",
+    "query": "Which sales territory has the highest average order value?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:07:09.604224",
+    "query": "Show me all products",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:07:13.424830",
+    "query": "List all customers with their email addresses",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:07:18.181132",
+    "query": "Show me products that are red in color",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:07:21.959040",
+    "query": "What is the total sales amount?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:07:26.172934",
+    "query": "How many customers do we have?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:07:29.527067",
+    "query": "What is the average order quantity for internet sales?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:07:33.789451",
+    "query": "Show me all sales with product names",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:07:37.972032",
+    "query": "List all orders with customer names and product names",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:07:43.766787",
+    "query": "Show me sales by product category",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:07:52.815247",
+    "query": "Show me sales from the year 2023",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:07:58.231359",
+    "query": "What were the total sales in December 2023?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:08:04.257833",
+    "query": "Show me total sales by country",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:08:16.180541",
+    "query": "What is the average unit price by product category?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:08:22.399983",
+    "query": "Show me the top 10 products by sales amount",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:08:28.130996",
+    "query": "Who are the top 5 customers by total purchase amount?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:08:34.152820",
+    "query": "Compare sales between 2023 and 2024 by quarter",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:08:39.026206",
+    "query": "Show me the profit margin by product subcategory",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:08:45.107835",
+    "query": "Which sales territory has the highest average order value?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:08:59.511632",
+    "query": "Show me top customers last year",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:09:07.445573",
+    "query": "List customer emails and phone numbers",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:09:11.431329",
+    "query": "Show all sales records",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:09:15.839456",
+    "query": "Revenue trend for the last 4 quarters",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:09:21.787497",
+    "query": "Show sales by product and region and include a chart",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:09:29.190689",
+    "query": "Which products have no sales?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:12:08.017871",
+    "query": "Compare reseller vs internet sales by year",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:12:17.235614",
+    "query": "Show me the average discount for promotions",
+    "success": true,
+    "errors": [],
+    "planner_mode": "deterministic",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:12:25.100674",
+    "query": "Show me all products",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:12:30.632340",
+    "query": "List all customers with their email addresses",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:12:36.472763",
+    "query": "Show me products that are red in color",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:12:42.272042",
+    "query": "What is the total sales amount?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:12:48.199862",
+    "query": "How many customers do we have?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:12:52.231506",
+    "query": "What is the average order quantity for internet sales?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:12:57.514662",
+    "query": "Show me all sales with product names",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:13:02.935803",
+    "query": "List all orders with customer names and product names",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:13:13.081154",
+    "query": "Show me sales by product category",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:13:24.609105",
+    "query": "Show me sales from the year 2023",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:13:30.881702",
+    "query": "What were the total sales in December 2023?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:13:39.306045",
+    "query": "Show me total sales by country",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:13:51.388650",
+    "query": "What is the average unit price by product category?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:13:57.243936",
+    "query": "Show me the top 10 products by sales amount",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:14:03.051314",
+    "query": "Who are the top 5 customers by total purchase amount?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:14:08.579138",
+    "query": "Compare sales between 2023 and 2024 by quarter",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:14:14.724891",
+    "query": "Show me the profit margin by product subcategory",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:14:22.853257",
+    "query": "Which sales territory has the highest average order value?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:14:31.651453",
+    "query": "Show me top customers last year",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:14:37.076522",
+    "query": "List customer emails and phone numbers",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:14:42.493439",
+    "query": "Show all sales records",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:14:46.919758",
+    "query": "Revenue trend for the last 4 quarters",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:14:54.405852",
+    "query": "Show sales by product and region and include a chart",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:15:08.419630",
+    "query": "Which products have no sales?",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:17:46.474697",
+    "query": "Compare reseller vs internet sales by year",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  },
+  {
+    "timestamp": "2026-03-31T15:17:55.334844",
+    "query": "Show me the average discount for promotions",
+    "success": true,
+    "errors": [],
+    "planner_mode": "tool_calling",
+    "plan": [
+      "Retrieve context",
+      "Generate SQL",
+      "Validate SQL",
+      "Execute SQL"
+    ]
+  }
+]

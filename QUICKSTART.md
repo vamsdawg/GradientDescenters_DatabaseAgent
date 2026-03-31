@@ -68,6 +68,23 @@ agent.display_results(result)
 
 ---
 
+### Option 4: Agent Orchestrator (Planner-Executor) 🤖
+
+```python
+from agent_orchestrator import AgentOrchestrator
+
+# Initialize planner-executor agent
+agent = AgentOrchestrator(use_rag=True, enable_visualization=True, enable_vision=False)
+
+# Process query with explicit planning + tool orchestration
+result = agent.process_query("Top 10 products by revenue")
+
+print(result["plan"])  # Shows planned steps and execution status
+agent.shutdown()
+```
+
+---
+
 ## Example Queries to Try
 
 ### Time-Series Analysis
