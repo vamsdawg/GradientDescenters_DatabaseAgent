@@ -133,11 +133,11 @@ with st.sidebar:
     st.header("📋 Example Queries")
     
     example_queries = [
+        "Show me our top 5 customers in the United Kingdom. Who are they?",
+        "What 10 products which grew their sales the most, between Q1 and Q2 of 2013?",
         "Show monthly sales trends for 2013",
         "Top 10 products by revenue",
-        "Sales by product category",
-        "What were the highest selling products in December?",
-        "Compare sales across different regions"
+        "What were the highest selling products in December 2013?"
     ]
     
     for query in example_queries:
@@ -319,7 +319,6 @@ else:
 st.markdown("---")
 st.markdown("""
 <div style='text-align: center; color: #666;'>
-    <p>AdventureWorksDW2025 Multimodal Database Agent | Milestone 7: Multimodal Capabilities</p>
-    <p>DSBA 6010 Final Project | March 2026</p>
+    <p>Gradient Descenters: Multimodal Database Agent</p>
 </div>
 """, unsafe_allow_html=True)

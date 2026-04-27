@@ -1,127 +1,276 @@
-<<<<<<< HEAD
-# AdventureWorksDW2025 Database Agent Project
+# Gradient Descenters: Multimodal Database Agent
 
-## Overview
-This project develops an AI-powered database agent that converts natural language queries to SQL for the AdventureWorksDW2025 database. The system uses large language models (LLMs) to generate secure, optimized T-SQL queries with built-in privacy controls.
+**Course:** DSBA 6010 — AI Systems Engineering  
+**Team:** Gradient Descenters (Group 1)  
+**Database:** AdventureWorksDW2025 (Microsoft sample data warehouse)
 
-## Milestones Completed
+---
 
-### Milestone 3: LLM Experimentation
-- Tested 3 LLMs (Claude Sonnet 4.5, GPT-4.1, GPT-4o-mini) for text-to-SQL generation
-- Evaluated 18 test cases across different complexity levels
-- Measured performance metrics: accuracy, cost, latency, consistency
+## What Is This?
 
-### Milestone 4: Prompt Design and Testing
-- Developed 5 prompt templates using different techniques (instruction-based, few-shot, chain-of-thought)
-- Implemented comprehensive privacy controls to protect sensitive data:
-  - Customer: EmailAddress, Phone, Address
-  - Sales: SalesQuota information
-- Tested on 10 representative, edge-case, and complex queries
-- Selected best-performing prompt (Advanced + Privacy) for production use
+This project is a production-grade **multimodal AI database agent** that lets users query a SQL Server data warehouse using plain English. No SQL knowledge required. The agent translates the user's natural language question into a T-SQL query, executes it, automatically generates the most appropriate visualization, and then uses GPT-4o's vision capability to analyze the chart and return actionable business insights — all in a single pipeline.
+
+**The full pipeline looks like this:**
+
+```
+Natural Language Question
+        ↓
+  RAG Context Retrieval  (relevant schemas, patterns, business rules)
+        ↓
+  SQL Generation         (GPT-4o-mini, RAG-enhanced prompt)
+        ↓
+  SQL Validation         (syntax check + privacy enforcement)
+        ↓
+  Query Execution        (SQL Server / AdventureWorksDW2025)
+        ↓
+  Auto Visualization     (chart type auto-selected based on data shape)
+        ↓
+  Vision Analysis        (GPT-4o reads the chart image)
+        ↓
+  Business Insights      (returned to the user)
+```
+
+The system ships with two execution modes:
+- **Pipeline mode** — a clean sequential 4-step orchestrator (default)
+- **Agent mode** — an explicit planner-executor architecture with memory, validation retries, and step-by-step tracing
+
+---
 
 ## Quick Start
 
 ### Prerequisites
-- Python 3.8+
-- SQL Server with AdventureWorksDW2025 database
-- OpenAI API key (for GPT-4o-mini)
 
-### Setup
+- Python 3.9+
+- SQL Server with the **AdventureWorksDW2025** database restored (`.bacpac` file included)
+- ODBC Driver 17 for SQL Server
+- OpenAI API key (GPT-4o and GPT-4o-mini)
+- Anthropic API key (optional; used in LLM comparison evaluations)
 
-1. **Install dependencies**
+### 1. Install dependencies
+
 ```bash
+cd final_project
 pip install -r requirements.txt
 ```
 
-2. **Configure environment**
-Create a `.env` file:
+### 2. Configure environment
+
+Create a `.env` file in the `final_project/` directory:
+
 ```
-OPENAI_API_KEY=your_key_here
+OPENAI_API_KEY=sk-...
+ANTHROPIC_API_KEY=sk-ant-...      # optional
 DB_SERVER=localhost
 DB_NAME=AdventureWorksDW2025
 DB_DRIVER=ODBC Driver 17 for SQL Server
+DB_USER=                          # leave blank for Windows Auth
+DB_PASSWORD=                      # leave blank for Windows Auth
 ```
 
-### Running the Project
+### 3. Run the web app
 
-**Option 1: Jupyter Notebooks (Recommended)**
 ```bash
-jupyter notebook
+streamlit run streamlit_app.py
 ```
-Then run notebooks in order:
-- `01_setup_verification.ipynb` - Verify environment
-- `02_llm_experimentation.ipynb` - Quick test (5 cases)
-- `03_full_evaluation.ipynb` - Full evaluation (18 cases)
-- `04_prompt_testing.ipynb` - Prompt comparison and testing
 
-**Option 2: Python Scripts**
-```bash
-# Quick test
-python llm_evaluator.py
+Open your browser to `http://localhost:8501`. Click **Initialize Agent** in the sidebar and start asking questions.
 
-# Full evaluation
-python run_experiments.py
+---
+
+## Using the Web Interface
+
+The Streamlit app (`streamlit_app.py`) is the primary interface. The sidebar controls the agent configuration:
+
+| Control | Description |
+|---|---|
+| **Enable RAG Context** | Injects relevant schema info, join patterns, and business rules into the SQL prompt |
+| **Enable Vision Analysis** | Sends the generated chart to GPT-4o for business insights |
+| **Use Planner-Executor Agent** | Switches from pipeline mode to explicit step-by-step agent mode |
+| **Planner Mode** | When in agent mode: `tool_calling` (LLM-planned) or `deterministic` (fixed order) |
+| **Vision Model** | `gpt-4o` (higher quality) or `gpt-4o-mini` (lower cost) |
+
+**Example queries to try:**
+
+- *Show me our top 5 customers in the United Kingdom. Who are they?*
+- *What 10 products which grew their sales the most, between Q1 and Q2 of 2013?*
+- *Show monthly sales trends for 2013*
+- *Top 10 products by revenue*
+- *What were the highest selling products in December 2013?*
+
+The **Advanced Options** expander lets you override the chart type, toggle SQL display, and enable the agent trace view (for agent mode).
+
+---
+
+## Using the Agent Programmatically
+
+### Pipeline mode
+
+```python
+from multimodal_agent import MultimodalDatabaseAgent
+
+agent = MultimodalDatabaseAgent(use_rag=True, enable_vision=True, vision_model="gpt-4o")
+result = agent.process_query("Show monthly sales trends for 2013")
+
+print(result["sql_query"])        # Generated T-SQL
+print(result["row_count"])        # Number of rows returned
+print(result["visualization"])    # Path to the generated chart PNG
+print(result["vision_analysis"])  # GPT-4o business insights text
 ```
+
+### Agent (planner-executor) mode
+
+```python
+from agent_orchestrator import AgentOrchestrator
+
+agent = AgentOrchestrator(
+    use_rag=True,
+    enable_visualization=True,
+    enable_vision=True,
+    planner_mode="tool_calling"   # or "deterministic"
+)
+result = agent.process_query("Top 10 products by revenue")
+
+for step in result["plan"]:
+    print(f"{step['name']}: {step['status']}")
+
+agent.shutdown()
+```
+
+---
 
 ## Project Structure
+
 ```
 final_project/
-├── README.md                        # Project documentation
-├── requirements.txt                 # Python dependencies
-├── .env                             # API keys and database config
 │
-├── notebooks/                       # Jupyter notebooks
-│   ├── 01_setup_verification.ipynb  # Environment verification
-│   ├── 02_llm_experimentation.ipynb # Quick test (5 cases)
-│   ├── 03_full_evaluation.ipynb     # Full evaluation (18 cases)
-│   └── 04_prompt_testing.ipynb      # Prompt design & testing
+├── streamlit_app.py             # Streamlit web UI — primary demo interface
+├── multimodal_agent.py          # 4-stage pipeline orchestrator
+├── agent_orchestrator.py        # Planner-executor agent with memory
 │
-├── database_utils.py                # Database connection & utilities
-├── test_cases.py                    # Test query definitions
-├── llm_evaluator.py                 # LLM evaluation framework
-├── run_experiments.py               # Full evaluation runner
-├── agent_orchestrator.py            # Planner-executor agent architecture
+├── database_utils.py            # SQL Server connection and query utilities
+├── rag_manager.py               # ChromaDB vector store (64 documents, 4 collections)
+├── rag_evaluator.py             # RAG-enhanced SQL generation via GPT-4o-mini
+├── visualization_generator.py   # Auto chart-type selection and chart rendering
+├── vision_analyzer.py           # GPT-4o vision analysis of generated charts
 │
-└── results/                         # Output directory (auto-created)
-    ├── experiment_results.json      # Detailed results
-    ├── prompt_testing_results_*.json # Prompt test results
-    └── *.csv                        # Summary statistics
+├── multimodal_evaluator.py      # Cross-modal consistency testing framework
+├── llm_evaluator.py             # Multi-LLM evaluation framework
+├── rag_evaluation.py            # RAG retrieval quality evaluation
+├── test_cases.py                # 26 labeled test cases (Easy → Very Hard)
+├── run_experiments.py           # Full evaluation pipeline runner
+├── planner_ab_evaluation.py     # A/B test: deterministic vs tool-calling planner
+├── generate_schema_docs.py      # Generates RAG schema docs from live DB
+│
+├── requirements.txt             # Python dependencies
+├── .env                         # API keys + DB config (not in repo)
+├── adventureworksdw2025.bacpac  # Database backup for restore
+│
+├── rag_content/                 # RAG knowledge base (loaded into ChromaDB)
+│   ├── schemas/                 # 14 table schema .txt files
+│   ├── patterns/                # 8 reusable SQL join pattern files
+│   ├── business_rules/          # Business rules + field glossary
+│   └── examples/                # NL→SQL example pairs (JSON)
+│
+├── notebooks/                   # Jupyter notebooks (milestone demos)
+│   ├── 03_llm_experimentation.ipynb
+│   ├── 04_prompt_testing.ipynb
+│   ├── 05_fewshot_optimizations.ipynb
+│   ├── 06_rag_pipeline_demonstration.ipynb
+│   ├── 07_multimodal_capabilities_demo.ipynb
+│   └── milestone_12_security_audit.ipynb
+│
+├── milestone submissions/       # All milestone Word/PDF deliverables
+├── results/                     # Generated: experiment results, agent memory
+├── visualizations/              # Generated: timestamped chart PNGs
+└── chroma_db/                   # Generated: persisted ChromaDB vector database
 ```
 
-## Key Features
+---
 
-**Privacy-First Design**
-- Automatically excludes sensitive customer data (email, phone, addresses)
-- Protects employee contact information
-- Hides sales quota data
-- Uses only approved fields for identification
+## Component Reference
 
-**Optimized Prompt Engineering**
-- Advanced prompt template with explicit privacy rules
-- Schema-aware query generation
-- Validation checklist for quality assurance
-- Tested across multiple prompting techniques
+### `database_utils.py` — Database Layer
+Handles all SQL Server connectivity. Supports both Windows Authentication and SQL/Azure authentication via `.env`. Key methods: `execute_query()`, `get_schema_info()`, `validate_sql_syntax()`.
 
-**Comprehensive Testing**
-- 18 test cases covering simple to complex queries
-- Representative queries, edge cases, and complex analytical queries
-- Privacy-sensitive test scenarios
-- Performance metrics: accuracy, latency, cost
+### `rag_manager.py` — Retrieval-Augmented Generation
+Manages a ChromaDB vector database with four collections: table schemas, join patterns, business rules, and NL→SQL examples. At query time, the most relevant documents are retrieved (cosine similarity) and injected into the SQL generation prompt. Uses OpenAI `text-embedding-3-small` for embeddings.
 
-**Agent-Based Orchestration**
-- Planner-executor architecture with explicit tool orchestration
-- Step-by-step plans, validation, and optional retries
-- Lightweight memory persistence for multi-step interactions
+### `rag_evaluator.py` — SQL Generation
+The core SQL generation class. Builds a context-rich prompt from RAG retrieval and calls GPT-4o-mini (temperature=0) to produce T-SQL. Also handles output cleaning (strips markdown fences) and token tracking.
 
-## Results
+### `visualization_generator.py` — Chart Engine
+Automatically selects the best chart type for the query result based on data shape and query keywords (line for time-series, bar/horizontal bar for rankings, pie for small-slice distributions, scatter for correlation data). Renders charts with Matplotlib/Seaborn and saves them as timestamped PNGs.
 
-The current system uses GPT-4o-mini with the Advanced + Privacy prompt template, which provides:
-- High query accuracy
-- Strong privacy compliance
-- Low cost per query
-- Fast response times
+### `vision_analyzer.py` — Multimodal Analysis
+Encodes the generated chart as base64 and sends it to GPT-4o's vision API along with a chart-type-specific prompt. Returns structured business insights: trends, patterns, outliers, and recommendations. Supports comparative analysis across multiple charts.
 
-All evaluation results are saved in the `results/` directory with timestamps for tracking improvements over time.
-=======
-# Spring-2026-DSBA-6010-Group-1-Gradient-Descenters
->>>>>>> 8e1f015152420b85b4826324a43cf17e13427f02
+### `multimodal_agent.py` — Pipeline Orchestrator
+Wires the four stages together (SQL generation → execution → visualization → vision analysis) into a single `process_query()` call. Returns a unified result dict with SQL, data, chart path, vision insights, and performance metrics.
+
+### `agent_orchestrator.py` — Planner-Executor Agent
+An explicit planner-executor architecture built on top of the same components. The **PlannerAgent** (deterministic) or **ToolCallingPlanner** (LLM-driven) produces an ordered list of `AgentStep` objects. The **ExecutorAgent** runs each step, enforces privacy checks, retries failed SQL generation once, and logs every execution to persistent JSON memory.
+
+### `multimodal_evaluator.py` — Consistency Testing
+Automated test framework that checks cross-modal consistency: are the values the vision model reads from the chart consistent with the actual data? Tests value extraction, ranking accuracy, and trend direction. Achieved 89% consistency in evaluation.
+
+### `test_cases.py` — Test Suite
+26 labeled test cases organized by category (Simple Select, Aggregation, Join, Date Filter, Top N, Complex, Edge Case) and difficulty (Easy through Very Hard). Used by all evaluation scripts.
+
+---
+
+## Privacy & Security
+
+The agent enforces a two-layer privacy system to prevent exposure of sensitive fields:
+
+1. **Prompt-level:** The SQL generation prompt explicitly forbids querying certain fields.
+2. **Executor-level:** Before executing any SQL, the agent scans for the following forbidden fields and blocks the query if any are found:
+
+```
+EmailAddress, Phone, AddressLine1, AddressLine2,
+SalesQuota, SalesQuotaDate, LoginID, NationalIDNumber
+```
+
+This was designed and tested as part of the Milestone 4 (Prompt Engineering) and Milestone 12 (Security Audit) deliverables.
+
+---
+
+## Performance Benchmarks
+
+| Metric | Value |
+|---|---|
+| SQL generation time | ~1.2s (with RAG) |
+| Visualization creation | ~0.8s |
+| Vision analysis | ~0.7s |
+| **Total per query** | **~2.7s** |
+| SQL success rate | ~90% |
+| Cross-modal consistency | 89% |
+| Estimated cost per query | ~$0.013 |
+
+---
+
+## Key Design Decisions
+
+**No fine-tuning.** GPT-4o-mini with RAG-enhanced prompting already achieves 90%+ SQL success rate. Fine-tuning was evaluated and ruled out in Milestone 6 — the cost and complexity were not justified given the prompt-based baseline's performance.
+
+**ChromaDB with cosine similarity.** Cosine distance is more appropriate than L2 for comparing text embeddings because it captures semantic direction rather than absolute vector magnitude.
+
+**Deterministic planner as fallback.** The tool-calling planner uses LLM function calling to determine its execution plan, but falls back to a fixed deterministic plan on any failure to guarantee reliability.
+
+**Retry budget of 1.** The executor retries SQL generation exactly once on validation failure (with the error message as context), then aborts. This balances resilience against runaway API costs.
+
+**Visualizations saved to disk.** Charts are written as PNG files rather than held in memory, so the exact image path can be passed to the GPT-4o vision API without re-encoding.
+
+---
+
+## Milestone Progression
+
+This system was built incrementally across class milestones:
+
+| Milestone | Focus | Outcome |
+|---|---|---|
+| 3 | LLM comparison (Claude, GPT-4.1, GPT-4o-mini) | Selected GPT-4o-mini (best cost-performance) |
+| 4 | Prompt engineering + privacy controls | Advanced+Privacy template chosen for production |
+| 6 | Fine-tuning decision | Ruled out; RAG+prompting hits 90% |
+| 7 | Multimodal integration | Visualization + GPT-4o vision; 89% consistency |
+| 10 | Planner-executor agent | Deterministic + tool-calling planners + agent memory |
+| 12 | Security audit | Formal privacy testing and forbidden-field validation |
