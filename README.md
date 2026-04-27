@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # AdventureWorksDW2025 Database Agent Project
 
 ## Overview
@@ -121,3 +122,6 @@ The current system uses GPT-4o-mini with the Advanced + Privacy prompt template,
 - Fast response times
 
 All evaluation results are saved in the `results/` directory with timestamps for tracking improvements over time.
+=======
+# Spring-2026-DSBA-6010-Group-1-Gradient-Descenters
+>>>>>>> 8e1f015152420b85b4826324a43cf17e13427f02
