@@ -134,7 +134,7 @@ with st.sidebar:
     
     example_queries = [
         "Show me our top 5 customers in the United Kingdom. Who are they?",
-        "What 10 products which grew their sales the most, between Q1 and Q2 of 2013?",
+        "Which 10 products grew their sales the most, between Q1 and Q2 of 2013?",
         "Show monthly sales trends for 2013",
         "Top 10 products by revenue",
         "What were the highest selling products in December 2013?"
