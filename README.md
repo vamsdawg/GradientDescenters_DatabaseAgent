@@ -4,6 +4,14 @@
 **Team:** Gradient Descenters (Group 1)  
 **Database:** AdventureWorksDW2025 (Microsoft sample data warehouse)
 
+## 🚀 Live Demo
+
+**[https://gradientdescentersdatabaseagent.streamlit.app/](https://gradientdescentersdatabaseagent.streamlit.app/)**
+
+1. Click **Initialize Agent** in the left sidebar.
+2. Type a question in plain English (or click one of the example queries).
+3. Click **Process Query** — the agent will return the SQL it generated, a visualization, and AI-powered business insights.
+
 ---
 
 ## What Is This?
