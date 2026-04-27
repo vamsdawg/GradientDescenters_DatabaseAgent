@@ -8,8 +8,8 @@ from PIL import Image
 import sys
 from pathlib import Path
 
-# Add parent directory to path
-sys.path.append(str(Path(__file__).parent))
+# Add _prod to path so application modules are importable
+sys.path.insert(0, str(Path(__file__).parent / '_prod'))
 
 from multimodal_agent import MultimodalDatabaseAgent
 from agent_orchestrator import AgentOrchestrator

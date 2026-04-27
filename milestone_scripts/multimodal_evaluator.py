@@ -2,12 +2,17 @@
 Multimodal Evaluator - Tests cross-modal consistency and relevance
 Implements testing framework for Requirement 3
 """
+import sys
+from pathlib import Path
+_ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(_ROOT / '_prod'))
+sys.path.insert(0, str(Path(__file__).parent))
+
 import pandas as pd
 from typing import Dict, List, Tuple
 import re
 from datetime import datetime
 import json
-from pathlib import Path
 
 from multimodal_agent import MultimodalDatabaseAgent
 from agent_orchestrator import AgentOrchestrator

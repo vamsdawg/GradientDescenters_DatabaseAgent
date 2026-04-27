@@ -2,6 +2,12 @@
 Planner A/B Evaluation - Compare deterministic vs tool-calling planners.
 Generates a combined report and optional blind A/B files for human evaluation.
 """
+import sys
+from pathlib import Path
+_ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(_ROOT / '_prod'))
+sys.path.insert(0, str(Path(__file__).parent))
+
 import argparse
 import csv
 import json

@@ -151,27 +151,28 @@ agent.shutdown()
 ```
 final_project/
 │
-├── streamlit_app.py             # Streamlit web UI — primary demo interface
-├── multimodal_agent.py          # 4-stage pipeline orchestrator
-├── agent_orchestrator.py        # Planner-executor agent with memory
-│
-├── database_utils.py            # SQL Server connection and query utilities
-├── rag_manager.py               # ChromaDB vector store (64 documents, 4 collections)
-├── rag_evaluator.py             # RAG-enhanced SQL generation via GPT-4o-mini
-├── visualization_generator.py   # Auto chart-type selection and chart rendering
-├── vision_analyzer.py           # GPT-4o vision analysis of generated charts
-│
-├── multimodal_evaluator.py      # Cross-modal consistency testing framework
-├── llm_evaluator.py             # Multi-LLM evaluation framework
-├── rag_evaluation.py            # RAG retrieval quality evaluation
-├── test_cases.py                # 26 labeled test cases (Easy → Very Hard)
-├── run_experiments.py           # Full evaluation pipeline runner
-├── planner_ab_evaluation.py     # A/B test: deterministic vs tool-calling planner
-├── generate_schema_docs.py      # Generates RAG schema docs from live DB
-│
+├── streamlit_app.py             # Entry point — Streamlit web UI
 ├── requirements.txt             # Python dependencies
 ├── .env                         # API keys + DB config (not in repo)
 ├── adventureworksdw2025.bacpac  # Database backup for restore
+│
+├── _prod/                       # Production modules (imported by the app)
+│   ├── multimodal_agent.py      # 4-stage pipeline orchestrator
+│   ├── agent_orchestrator.py    # Planner-executor agent with memory
+│   ├── database_utils.py        # SQL Server connection and query utilities
+│   ├── rag_manager.py           # ChromaDB vector store (64 docs, 4 collections)
+│   ├── rag_evaluator.py         # RAG-enhanced SQL generation via GPT-4o-mini
+│   ├── visualization_generator.py  # Auto chart-type selection and rendering
+│   └── vision_analyzer.py       # GPT-4o vision analysis of generated charts
+│
+├── milestone_scripts/           # Evaluation and utility scripts (not used by app)
+│   ├── multimodal_evaluator.py  # Cross-modal consistency testing framework
+│   ├── llm_evaluator.py         # Multi-LLM evaluation framework
+│   ├── rag_evaluation.py        # RAG retrieval quality evaluation
+│   ├── test_cases.py            # 26 labeled test cases (Easy → Very Hard)
+│   ├── run_experiments.py       # Full evaluation pipeline runner
+│   ├── planner_ab_evaluation.py # A/B test: deterministic vs tool-calling planner
+│   └── generate_schema_docs.py  # Generates RAG schema docs from live DB
 │
 ├── rag_content/                 # RAG knowledge base (loaded into ChromaDB)
 │   ├── schemas/                 # 14 table schema .txt files

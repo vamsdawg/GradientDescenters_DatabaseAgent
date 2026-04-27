@@ -1,6 +1,12 @@
 """
 Main script to run LLM experiments and generate comparison report
 """
+import sys
+from pathlib import Path
+_ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(_ROOT / '_prod'))
+sys.path.insert(0, str(Path(__file__).parent))
+
 import json
 import pandas as pd
 from llm_evaluator import LLMEvaluator
