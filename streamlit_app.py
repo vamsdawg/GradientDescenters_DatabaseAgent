@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 
 # Add _prod to path so application modules are importable
-sys.path.insert(0, str(Path(__file__).parent / '_prod'))
+sys.path.insert(0, str(Path(__file__).parent / 'PROD'))
 
 from multimodal_agent import MultimodalDatabaseAgent
 from agent_orchestrator import AgentOrchestrator

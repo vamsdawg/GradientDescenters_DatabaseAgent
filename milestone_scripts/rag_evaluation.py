@@ -5,7 +5,7 @@ Evaluates retrieval quality (precision@k, recall) and answer quality
 import sys
 from pathlib import Path
 _ROOT = Path(__file__).parent.parent
-sys.path.insert(0, str(_ROOT / '_prod'))
+sys.path.insert(0, str(_ROOT / 'PROD'))
 sys.path.insert(0, str(Path(__file__).parent))
 
 import os
