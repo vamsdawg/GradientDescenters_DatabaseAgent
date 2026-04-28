@@ -137,7 +137,7 @@ with st.sidebar:
         "Which 10 products grew their sales the most, between Q1 and Q2 of 2013?",
         "Show monthly sales trends for 2013",
         "Top 10 products by revenue",
-        "What were the highest selling products in December 2013?"
+        "Show me a breakdown of sales across subcategories within the Bikes category, specific to Australia in the year 2013"
     ]
     
     for query in example_queries:
